@@ -1,0 +1,106 @@
+{
+  "side_projects": [
+    {
+      "title"       : "this",
+      "description" : "",
+      "tags"        : ["Javascript", "React"],
+      "type"        : "webpage",
+      "imageSource" : "website.png",
+      "links"       : [
+        {
+          "type": "github",
+          "url": "https://www.github.com/williamtfalch/hyper-kitten-cursor"
+        }
+      ]
+    },
+    {
+      "title"       : "Game of life",
+      "description" : "John Conway's Game of Life. Create an initial configuration, click start, and enjoy.",
+      "tags"        : ["Javascript", "React"],
+      "type"        : "webpage",
+      "imageSource" : "gameoflife.png",
+      "page"        : "gameoflife",
+      "links"       : [
+        {
+          "type": "github",
+          "url": "https://www.github.com/williamtfalch/hyper-kitten-cursor"
+        },
+        {
+          "type": "npm",
+          "url": "https://www.npm.com/williamtfalch/hyper-kitten-cursor"
+        }
+      ]
+    },
+    {
+      "title"       : "Gravity",
+      "description" : "2D planet simulation. Use it as a calming screensaver, or create havoc.",
+      "tags"        : ["Javascript", "React"],
+      "type"        : "webpage",
+      "imageSource" : "gravity.png",
+      "page"        : "gravity",
+      "links"       : [
+        {
+          "type": "web",
+          "url": "https://www.github.com/williamtfalch/hyper-kitten-cursor"
+        },
+        {
+          "type": "npm",
+          "url": "https://www.npm.com/williamtfalch/hyper-kitten-cursor"
+        }
+      ]
+    },
+    {
+      "title"       : "Hyper cat cursor",
+      "description" : "Cat cursor for your Hyper.js terminal. Cute, productive-enhancing, and eco-friendly",
+      "tags"        : ["Javascript", "Hyper.js"],
+      "type"        : "package",
+      "imageSource" : "cat.png",
+      "links"       : [
+        {
+          "type": "github",
+          "url": "https://www.github.com/williamtfalch/hyper-kitten-cursor"
+        },
+        {
+          "type": "npm",
+          "url": "https://www.npmjs.com/package/hyper-kitten-cursor"
+        }
+      ]
+    }
+  ],
+  "professionally": [
+    {
+      "title"       : "Web Bluetooth API",
+      "description" : "A Web Bluetooth API that let's you interact with Nordic Semiconductor's Thingy:52",
+      "tags"        : ["Javascript", "Web Bluetooth"],
+      "type"        : "package",
+      "imageSource" : "thingy52.png",
+      "links"       : [
+        {
+          "type": "github",
+          "url": "https://www.github.com/NordicPlayground/Nordic-Thingy52-Thingyjs"
+        },
+        {
+          "type": "npm",
+          "url": "https://www.npmjs.com/package/thingy52_web_bluetooth"
+        }
+      ]
+    },
+    {
+      "title"       : "React application",
+      "description" : "Web page that examplifies interaction with the aforementioned API",
+      "tags"        : ["Javascript", "Web Bluetooth"],
+      "type"        : "webpage",
+      "imageSource" : "thingy52.png",
+      "links"       : [
+        {
+          "type": "web",
+          "url": "https://developer.nordicsemi.com/thingy/52/"
+        },
+        {
+          "type": "github",
+          "url": "https://github.com/NordicPlayground/webapp-nordic-thingy"
+        }
+      ]
+    }
+  ]
+}
