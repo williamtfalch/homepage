@@ -3,43 +3,73 @@ import ProjectLoader from './components/ProjectLoader'
 import Home from './Home'
 import GravityApp from './projects/gravity/src/GravityApp'
 import GameoflifeApp from './projects/gameoflife/src/GameoflifeApp'
+import styled from 'styled-components'
+
+const BackButton = styled.button`
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1000;
+`;
 
 const App:React.FunctionComponent = (props) => {
-  const [shouldEnter, setShouldEnter]                 = useState(true)
-  const [shouldAnimate, setShouldAnimate]             = useState(false)
-  const [activeProjectString, setActiveProjectString] = useState("k")
+  const [canOpenProject, setCanOpenProject]           = useState(true)
+  const [activeProjectString, setActiveProjectString] = useState("")
   const [activeProject, setActiveProject]             = useState<React.ReactNode>(null)
   const homeRef                                       = useRef<HTMLDivElement>(null)
+
+  const [shouldEnter, setShouldEnter]                 = useState(false)
+  const [shouldExit, setShouldExit]                   = useState(false)
+  const [hasEntered, setHasEntered]                   = useState(false)
+  const [hasExited, setHasExited]                     = useState(false)
   
   useEffect(() => {
-    switch (activeProjectString) {
-      case "gravity":
-        setActiveProject(<GravityApp />)
-        setShouldAnimate(true)
-        break;
-
-      case "gameoflife":
-        setActiveProject(<GameoflifeApp />)
-        setShouldAnimate(true)
-        break;
-    
-      default:
-        setActiveProject(null)
-        setShouldAnimate(false)
-        break;
+    if (canOpenProject) {
+      switch (activeProjectString) {
+        case "gravity": 
+          setActiveProject(<GravityApp />)
+          setShouldEnter(true)
+          break
+        
+  
+        case "gameoflife": 
+          setActiveProject(<GameoflifeApp />)
+          setShouldEnter(true)
+          break
+        
+        default:
+          setShouldEnter(false)
+          setShouldExit(false)
+          setHasEntered(false)
+          setHasExited(false)
+          break
+      }
     }
   }, [activeProjectString])
 
+  useEffect(() => {
+    if (hasExited) {
+      setActiveProjectString("")
+    }
+  }, [hasExited])
+
   return (
-    <div className="App">
+    <>
       <Home onProjectClick={setActiveProjectString} ref={homeRef} />
 
-      <ProjectLoader shouldEnter={shouldEnter} shouldAnimate={shouldAnimate} homeRef={homeRef}>
-        {
-          activeProject
-        }
-      </ProjectLoader>
-    </div>
+      {
+        hasEntered && !hasExited &&
+          <BackButton onClick={() => setShouldExit(true)}>Back</BackButton>
+      }
+      {
+        (shouldEnter && !hasExited) &&
+          <ProjectLoader shouldEnter={shouldEnter} shouldExit={shouldExit} hasExited={hasExited} setHasEntered={setHasEntered} setHasExited={setHasExited} homeRef={homeRef}>
+            {
+              activeProject
+            }
+          </ProjectLoader>
+      }
+    </>
   );
 }
 

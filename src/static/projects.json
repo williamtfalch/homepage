@@ -4,30 +4,26 @@
       "title"       : "this",
       "description" : "",
       "tags"        : ["Javascript", "React"],
-      "type"        : "webpage",
+      "type"        : "application",
       "imageSource" : "website.png",
       "links"       : [
         {
           "type": "github",
-          "url": "https://www.github.com/williamtfalch/hyper-kitten-cursor"
+          "url": "https://www.github.com/williamtfalch/homepage"
         }
       ]
     },
     {
       "title"       : "Game of life",
-      "description" : "John Conway's Game of Life. Create an initial configuration, click start, and enjoy.",
+      "description" : "John Conway's Game of Life. Create an initial configuration, click Play, and enjoy.",
       "tags"        : ["Javascript", "React"],
-      "type"        : "webpage",
+      "type"        : "application",
       "imageSource" : "gameoflife.png",
       "page"        : "gameoflife",
       "links"       : [
         {
           "type": "github",
-          "url": "https://www.github.com/williamtfalch/hyper-kitten-cursor"
-        },
-        {
-          "type": "npm",
-          "url": "https://www.npm.com/williamtfalch/hyper-kitten-cursor"
+          "url": "https://www.github.com/williamtfalch/gameoflife"
         }
       ]
     },
@@ -35,17 +31,13 @@
       "title"       : "Gravity",
       "description" : "2D planet simulation. Use it as a calming screensaver, or create havoc.",
       "tags"        : ["Javascript", "React"],
-      "type"        : "webpage",
+      "type"        : "application",
       "imageSource" : "gravity.png",
       "page"        : "gravity",
       "links"       : [
         {
-          "type": "web",
-          "url": "https://www.github.com/williamtfalch/hyper-kitten-cursor"
-        },
-        {
-          "type": "npm",
-          "url": "https://www.npm.com/williamtfalch/hyper-kitten-cursor"
+          "type": "github",
+          "url": "https://www.github.com/williamtfalch/gravity"
         }
       ]
     },

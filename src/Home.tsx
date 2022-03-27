@@ -33,12 +33,12 @@ const ProjectsContainer = styled.div`
 `;
 
 
-interface IProjectDisplayProps {
+interface IProjectRowProps {
   projectType: string,
   onProjectClick:(projectName:string) => void
 }
 
-const ProjectDisplay = (props:IProjectDisplayProps) => {
+const ProjectRow = (props:IProjectRowProps) => {
   const projectType:string                  = props.projectType
   const projects:Record<string, IProject[]> = projectJSON
 
@@ -59,7 +59,7 @@ interface IHomeProps extends React.ComponentPropsWithoutRef<'div'>{
 const Home = forwardRef<HTMLDivElement, IHomeProps>((props, ref) => (
   <HomeContainer ref={ref}>
     {
-      ["side_projects", "professionally"].map(sp => <ProjectDisplay projectType={sp} key={sp} onProjectClick={props.onProjectClick} />)
+      ["side_projects", "professionally"].map(sp => <ProjectRow projectType={sp} key={sp} onProjectClick={props.onProjectClick} />)
     }
   </ HomeContainer>
 ));

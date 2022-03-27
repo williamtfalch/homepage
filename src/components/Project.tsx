@@ -9,13 +9,13 @@ const move = keyframes`
   }
 
   to {
-    transform: translateY(-102%);
+    transform: translateY(calc(-100% - 3px));
   }
 `;
 
 const move2 = keyframes`
   from {
-    transform: translateY(-100%);
+    transform: translateY(calc(-100% - 3px));
   }
 
   to {
@@ -45,8 +45,8 @@ const ProjectContainer = styled.div`
     border-bottom: none;
 
     > * {
-      width: inherit;
-      height: inherit;
+      width: 100%;
+      height: 100%;
       animation: ${move2} 0.33s 1 forwards;
     }
 
@@ -62,61 +62,42 @@ const ProjectContainer = styled.div`
       // heeeeeeeeeeeeeeeeeeeeeeeeeer
 
       > a {
-        flex-basis: 2;
-        flex-grow: 2;
-        width: 100%;
         display: flex;
-        flex-direction: column;
         justify-content: center;
         align-items: center;
+        border-bottom: 1px solid #D8E2DC;
 
         &:hover {
           background-color: #e3dfd5;
-          border: 1px solid #e3dfd5;
         }
 
         &:active {
           background-color: #cac6bd;
-          border: 1px solid #e3dfd5;
         }
       }
 
-      > span {
+      > a:last-child {
+        border-bottom: none;
+      }
+
+      > a.explore {
+        flex-basis: 2;
+        flex-grow: 2;
+        width: 100%;
+        flex-direction: column;
+      }
+
+      > a:not(.explore) {
         flex-basis: 1;
         flex-grow: 1;
         position: relative;
-        display: flex;
         flex-direction: row;
-        justify-content: center;
-        align-items: center;
-
-        &:hover {
-          background-color: #e3dfd5;
-          border: 1px solid #e3dfd5;
-        }
-
-        &:active {
-          background-color: #cac6bd;
-          border: 1px solid #e3dfd5;
-        }
-
-        > a {
-          
-        }
 
         > img {
           width: 20px;
           height: 20px;
           margin-right: 10px;
         }
-      }
-
-      > a, > span {
-        border: 1px solid #fdf8ed;
-      }
-
-      > a, > span:not(:last-child) {
-        border-bottom: 1px solid #D8E2DC;
       }
     }
    
@@ -166,8 +147,7 @@ interface IPropjectProps extends IProject {
 /////////////////////////
 
 const Project:React.FunctionComponent<IPropjectProps> = (props) => {
-  const image                         = require(`../static/${props.imageSource}`).default
-  const pageInProps                   = ("page" in props) ? true : false
+  const image = require(`../static/${props.imageSource}`).default
  
   return (
     <ProjectContainer>
@@ -175,8 +155,8 @@ const Project:React.FunctionComponent<IPropjectProps> = (props) => {
         <img src={image} />    
         <div>
           {
-            pageInProps &&
-              <a onClick={() => props.onProjectClick(props.page ? props.page : "")}>Explore</a>
+            ("page" in props) &&
+              <a onClick={() => props.onProjectClick(props.page as string)} className="explore">Explore</a>
           }
 
           {
@@ -184,10 +164,10 @@ const Project:React.FunctionComponent<IPropjectProps> = (props) => {
               const logo = require(`../static/${link.type}.png`).default
 
               return (
-                <span key={link.type}>
+                <a key={link.type} href={link.url}>
                   <img src={logo} />
-                  <a href={link.url}>{getWebsiteDisplayName(link.type)}</a>
-                </span>
+                  <span>{getWebsiteDisplayName(link.type)}</span>
+                </a>
               )
             })
           }
