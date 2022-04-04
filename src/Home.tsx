@@ -1,67 +1,84 @@
-import './App.css';
 import {forwardRef} from 'react'
-import Project from './components/Project'
-import styled from "styled-components"
 import projectJSON from './static/projects.json'
+import { StyledHome, StyledProjectRow, StyledProject } from './styles/StyledHome'
+import {getWebsiteDisplayName} from './utils'
 import { IProject } from './interfaces'
 
-const HomeContainer = styled.div`
-  position: absolute;
-  left: 0px;
-  top: 0px;
-  width: 100vw;
-  height: 100vh;
-  z-index: 1;
-`;
-
-const ProjectsContainer = styled.div`
-  width: 100vw;
-  height: 280px;
-  display: flex;
-  flex-direction: row;
-  position: relative;
-  padding: 15px 0px;
-
-  > h1 {
-    position: absolute;
-    left: 30px;
-  }
-
-  > div {
-    margin: 30px 0px 0px 30px;
-  }
-`;
-
+interface IHomeProps extends React.ComponentPropsWithoutRef<'div'>{
+  onProjectClick:(projectName:string) => void,
+}
 
 interface IProjectRowProps {
   projectType: string,
   onProjectClick:(projectName:string) => void
 }
 
+interface IProjectProps extends IProject {
+  onProjectClick:(projectName:string) => void,
+}
+
+///////////////////////////////////////////////////////////
+
 const ProjectRow = (props:IProjectRowProps) => {
   const projectType:string                  = props.projectType
   const projects:Record<string, IProject[]> = projectJSON
 
   return (
-    <ProjectsContainer>
+    <StyledProjectRow>
       <h1>{projectType.slice(0,1).toUpperCase() + projectType.slice(1).toLowerCase().replace("_", " ")}</h1>
-      {
-        projects[projectType].map(project => {return <Project key={project.title} onProjectClick={props.onProjectClick} {...project}></Project>})
-      }
-    </ProjectsContainer>
+
+      <div>
+        {
+          projects[projectType].map(project => <Project key={project.title} onProjectClick={props.onProjectClick} {...project}></Project>)
+        }
+      </div>
+    </StyledProjectRow>
   )
 }
 
-interface IHomeProps extends React.ComponentPropsWithoutRef<'div'>{
-  onProjectClick:(projectName:string) => void,
+
+const Project:React.FC<IProjectProps> = (props) => {
+  const image = require(`./static/${props.imageSource}`).default
+ 
+  return (
+    <StyledProject>
+      <div>
+        <img src={image} />
+
+        <div>
+          {
+            ("page" in props) &&
+              <a onClick={() => props.onProjectClick(props.page as string)} className="explore">Explore</a>
+          }
+
+          {
+            props.links.map(link => {
+              const logo = require(`./static/${link.type}.png`).default
+
+              return (
+                <a key={link.type} href={link.url}>
+                  <img src={logo} />
+                  <span>{getWebsiteDisplayName(link.type)}</span>
+                </a>
+              )
+            })
+          }
+        </div>
+      </div>
+
+      <h1>{props.title}</h1>
+    </StyledProject>
+  )
 }
 
+///////////////////////////////////////////////////////////
+
 const Home = forwardRef<HTMLDivElement, IHomeProps>((props, ref) => (
-  <HomeContainer ref={ref}>
+  <StyledHome ref={ref}>
     {
-      ["side_projects", "professionally"].map(sp => <ProjectRow projectType={sp} key={sp} onProjectClick={props.onProjectClick} />)
+      ["hobby_projects", "professional_life"].map(sp => <ProjectRow projectType={sp} key={sp} onProjectClick={props.onProjectClick} />)
     }
-  </ HomeContainer>
+  </ StyledHome>
 ));
 
 Home.displayName = "Home"

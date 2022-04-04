@@ -1,9 +1,9 @@
 {
-  "side_projects": [
+  "hobby_projects": [
     {
       "title"       : "this",
       "description" : "",
-      "tags"        : ["Javascript", "React"],
+      "tags"        : ["TypeScript", "React"],
       "type"        : "application",
       "imageSource" : "website.png",
       "links"       : [
@@ -14,7 +14,7 @@
       ]
     },
     {
-      "title"       : "Game of life",
+      "title"       : "Game of Life",
       "description" : "John Conway's Game of Life. Create an initial configuration, click Play, and enjoy.",
       "tags"        : ["Javascript", "React"],
       "type"        : "application",
@@ -59,10 +59,10 @@
       ]
     }
   ],
-  "professionally": [
+  "professional_life": [
     {
-      "title"       : "Web Bluetooth API",
-      "description" : "A Web Bluetooth API that let's you interact with Nordic Semiconductor's Thingy:52",
+      "title"       : "Web Bluetooth library",
+      "description" : "A Web Bluetooth library that let's you interact with Nordic Semiconductor's Thingy:52.",
       "tags"        : ["Javascript", "Web Bluetooth"],
       "type"        : "package",
       "imageSource" : "thingy52.png",
@@ -78,8 +78,8 @@
       ]
     },
     {
-      "title"       : "React application",
-      "description" : "Web page that examplifies interaction with the aforementioned API",
+      "title"       : "React web application",
+      "description" : "Web application that examplifies interaction with the aforementioned library.",
       "tags"        : ["Javascript", "Web Bluetooth"],
       "type"        : "webpage",
       "imageSource" : "thingy52.png",
