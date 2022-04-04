@@ -5,8 +5,8 @@ import styled from "styled-components"
 import { toPng } from 'html-to-image'
 import { IProjectStatus, IProjectProps, ILoadMethodProps } from '../interfaces'
 import { LoadAnimationRandomSquares } from './animations'
-import GravityApp from '../projects/gravity/src/GravityApp'
-import GameoflifeApp from '../projects/gameoflife/src/GameoflifeApp'
+import GravityProject from '../projects/gravity/src/App'
+import GameoflifeProject from '../projects/gameoflife/src/App'
 
 ////////////////////////////////////////////////////////////////
 
@@ -162,12 +162,12 @@ const Project: React.FC<IProjectProps> = (props) => {
           <LoadMethod {...props}>
             {
               props.project === "gravity" &&
-                <GravityApp />
+                <GravityProject />
             }
 
             {
               props.project === "gameoflife" &&
-                <GameoflifeApp />
+                <GameoflifeProject />
             }
           </LoadMethod>
       }

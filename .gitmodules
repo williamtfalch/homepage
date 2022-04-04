@@ -1,0 +1,6 @@
+[submodule "src/projects/gravity"]
+	path = src/projects/gravity
+	url = https://github.com/williamtfalch/gravity
+[submodule "src/projects/gameoflife"]
+	path = src/projects/gameoflife
+	url = https://github.com/williamtfalch/gameoflife
