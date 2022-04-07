@@ -1,34 +1,117 @@
 import styled, { keyframes } from "styled-components"
 
+interface IProjectRowProps {
+  offset:number,
+  numProjects: number
+}
+
+interface IProjectProps {
+  numProjects:number
+}
+
 export const StyledHome = styled.div`
   display: flex;
   flex-direction:  column;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  //z-index: 1;
+  position: relative;
+  z-index: 1000;
+  width: 100vw;
+  height: 100vh;
 
+  > div {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
 `;
 
-export const StyledProjectRow = styled.div`
+export const StyledProjectRow = styled.div<IProjectRowProps>`
   display: inline-flex;
   flex-direction: column;
   position: relative;
-  margin: 0px 0px 15px 30px;
+  margin-bottom: 15px;
+  position: relative;
+  width: 100vw;
 
-  > h1 {
+  > h2 {
     padding: 10px 0px 10px 10px;
     width: 150px;
     border-bottom: 5px solid #D8E2DC;
     margin-bottom: 5px;
-    font-size: 16px;
+    margin-left: calc(0.1 * 100vw);
+    //background-color: blue;
   }
 
   > div {
     display: flex;
     flex-direction: row;
-    margin: 10px 0px 10px 0px;
+    margin: 10px 0px;
+
+    > div:first-of-type {
+      //background-color: green;
+      display: flex;
+      flex-direction: row;
+      position: relative;
+      left: calc((0.1 + ${props => props.offset} * (${props => (-0.8 / props.numProjects)} - 0.005)) * 100vw); // TODO
+      transition: left 0.3s;
+    }
+
+    > div.gradient_left, div.gradient_right {
+      position: absolute;
+      width: calc(0.1 * 100vw);
+      height: 100%;
+      z-index: 1100;
+      cursor: pointer;
+
+      > div {
+        width: 30px;
+        height: 5px;
+        background-color: #c2cbc6;
+        border-radius: 5px;
+        position: absolute;
+      }
+
+      > div:nth-child(1) {
+        transform: rotate(60deg);
+      }
+
+      > div:nth-child(2) {
+        transform: rotate(-60deg);
+      }
+    }
+
+    > div.gradient_left {
+      background-image: linear-gradient(to right, rgba(253, 248, 237,1), rgba(253, 248, 237,0));
+      left: 0px;
+
+      > div {
+        left: calc(0.03 * 100vw);
+      }
+
+      > div:nth-child(2) {
+        top: 90px;
+      }
+
+      > div:nth-child(1) {
+        top: 112px;
+      }
+    }
+
+    > div.gradient_right {
+      background-image: linear-gradient(to right, rgba(253, 248, 237,0), rgba(253, 248, 237,1));
+      right: 0px;
+
+      > div {
+        right: calc(0.03 * 100vw);
+      }
+
+      > div:nth-child(1) {
+        top: 90px;
+      }
+
+      > div:nth-child(2) {
+        top: 112px;
+      }
+    }
   }
 `;
 
@@ -53,18 +136,19 @@ const move2 = keyframes`
 `;
 
 
-export const StyledProject = styled.div`
-  width: 350px;
+export const StyledProject = styled.div<IProjectProps>`
+  width: calc(${props => ((0.8 - (0.01 * (props.numProjects - 1))) / props.numProjects)} * 100vw);
   height: 226px;
   display: flex;
   flex-direction: column;
   position: relative;
   align-items: center;
   justify-content: center;
-  margin-right: 20px;
+  margin: 0px calc(0.01 * 100vw) 0px 0px;
+  //background-color: red;
   
   > div {
-    width: 346px;
+    width: calc((${props => ((0.8 - (0.01 * (props.numProjects - 1))) / props.numProjects)} * 100vw) - 4px);
     overflow: hidden;
     border: 2px solid #D8E2DC;
     position: relative;
@@ -91,7 +175,6 @@ export const StyledProject = styled.div`
       display: flex;
       flex-direction: column;
       justify-content: center;
-      // heeeeeeeeeeeeeeeeeeeeeeeeeer
 
       > a {
         display: flex;
@@ -112,14 +195,14 @@ export const StyledProject = styled.div`
         border-bottom: none;
       }
 
-      > a.explore {
+      > a.open {
         flex-basis: 2;
         flex-grow: 2;
         width: 100%;
         flex-direction: column;
       }
 
-      > a:not(.explore) {
+      > a:not(.open) {
         flex-basis: 1;
         flex-grow: 1;
         position: relative;
@@ -138,8 +221,8 @@ export const StyledProject = styled.div`
     }
   }
 
-  > h1 {
-    width: 320px;
+  > h3 {
+    width: calc((${props => ((0.8 - (0.01 * (props.numProjects - 1))) / props.numProjects)} * 100vw) - 30px);
     border-top: none;
     background-color: #D8E2DC;
     color: #2b2d2c;
@@ -161,7 +244,7 @@ export const StyledProject = styled.div`
       }
     }
 
-    > h1 {
+    > h3 {
       background-color: #c2cbc6;
     }
   }

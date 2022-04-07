@@ -29,7 +29,7 @@ const BackButton = styled.span`
   position: fixed;
   top: 20px;
   right: 20px;
-  z-index: 1000;
+  z-index: 3100;
   background-color: #D8E2DC;
   cursor: pointer;
   padding: 8px 30px;
@@ -153,12 +153,12 @@ const Project: React.FC<IProjectProps> = (props) => {
   return (
     <>
       {   
-        props.project && props.status.hasEntered && !props.status.shouldExit &&
+        props.project && props.status.hasEntered &&
           <BackButton onClick={() => props.setStatus({...props.status, shouldExit: true})}>Back</BackButton>
       }
 
       {
-        props.status.shouldEnter && !props.status.hasExited &&
+        (props.status.shouldEnter || props.status.hasEntered || props.status.shouldExit) && !props.status.hasExited &&
           <LoadMethod {...props}>
             {
               props.project === "gravity" &&

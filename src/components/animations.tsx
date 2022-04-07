@@ -15,23 +15,23 @@ interface ICanvasProps {
 ////////////////////////////////////////////////////////////////
 
 const StyledLoadAnimation = styled.div<ICanvasProps>`
-  width: 100vw;
-  height: 100vh;
+  //width: 100vw;
+  //height: 100vh;
   position: absolute;
   top: 0px;
   left: 0px;
 
   > canvas:first-child {
-    width: 100vw;
-    height: 100vh;
+    width: 10vw;
+    height: 10vh;
     position: absolute;
-    z-index: ${props => props.displayCanvas ? 3 : 0};
+    z-index: ${props => props.displayCanvas ? 2000 : 0};
   }
 `;
 
 ////////////////////////////////////////////////////////////////
 
-const LoadAnimation: React.FC<ILoadAnimationProps> = ({ status, setStatus, homeRef, children, onEnter, onExit }) => {
+const LoadAnimation: React.FC<ILoadAnimationProps> = ({ status, setStatus, pageRef, children, onEnter, onExit }) => {
   const { width, height }                                 = useWindowDimensions()
   const [screenshotHasLoaded, setScreenshotHasLoaded]     = useState(false)
   const [hideOverlay, setHideOverlay]                     = useState(true)
@@ -49,16 +49,19 @@ const LoadAnimation: React.FC<ILoadAnimationProps> = ({ status, setStatus, homeR
     Draw.drawImage(context, screenshot, 0, 0, width, height, 0, 0, width, height)
 
     setLandingPageScreenshot(screenshot)
-    setHideOverlay(false)
     setScreenshotHasLoaded(true)
   }
+
+  useEffect(() => {
+    setHideOverlay(false)
+  }, [screenshotHasLoaded])
 
 
   // creates screenshot of landing page and starts start pipeline when shouldEnter turns true
   useEffect(() => {
     if (status.shouldEnter) {
-      if (homeRef && "current" in homeRef && homeRef.current) {
-        const elem: HTMLDivElement = homeRef.current
+      if (pageRef && "current" in pageRef && pageRef.current) {
+        const elem: HTMLDivElement = pageRef.current
 
         toPng(elem)
           .then(function (dataUrl) {

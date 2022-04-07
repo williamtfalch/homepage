@@ -1,12 +1,14 @@
 import { useState, useEffect, useRef } from 'react'
 import Project from './components/Project'
+import Explore from './Explore'
 import Home from './Home'
 import { IProjectStatus } from './interfaces'
 
 const App:React.FunctionComponent = (props) => {
   const [canOpenProject, setCanOpenProject] = useState(true)
-  const [activeProject, setActiveProject]   = useState<string | undefined>(undefined)
-  const homeRef                             = useRef<HTMLDivElement>(null)
+  const [activeProject, setActiveProject]   = useState<string>("")
+  const pageRef                             = useRef<HTMLDivElement>(null)
+  const [currentView, setCurrentView]       = useState<"home" | "explore">("home")
 
   const [projectStatus, setProjectStatus]   = useState<IProjectStatus>({
     shouldEnter: false,
@@ -15,11 +17,10 @@ const App:React.FunctionComponent = (props) => {
     hasExited: false
   })
   
+  // TODO
   useEffect(() => {
     if (canOpenProject) {
-      if (activeProject) {
-        setProjectStatus({...projectStatus, shouldEnter: true})
-      } else {
+      if (!activeProject) {
         setProjectStatus({
           shouldEnter: false,
           shouldExit: false,
@@ -31,16 +32,62 @@ const App:React.FunctionComponent = (props) => {
   }, [activeProject])
 
   useEffect(() => {
-    if (projectStatus.hasExited) {
-      setActiveProject(undefined)
+    if (projectStatus.hasEntered) {
+      setProjectStatus({...projectStatus, shouldEnter: false})
+    }
+  }, [projectStatus.hasEntered])
+
+  useEffect(() => {
+    if (projectStatus.shouldExit) { 
+      setProjectStatus({...projectStatus, hasEntered: false})
+    }
+  }, [projectStatus.shouldExit])
+
+  useEffect(() => {
+    if (projectStatus.hasExited) { 
+      setProjectStatus({...projectStatus, shouldExit: false})
     }
   }, [projectStatus.hasExited])
 
+  useEffect(() => {
+    if (projectStatus.shouldEnter) { 
+      setProjectStatus({...projectStatus, hasExited: false})
+    }
+  }, [projectStatus.shouldEnter])
+
   return (
     <>
-      <Home onProjectClick={setActiveProject} ref={homeRef} />
+      {
+        currentView === "home" &&
+          <Home 
+            onOpenClick={(projectName:string) => {
+              setActiveProject(projectName);
+              setProjectStatus({...projectStatus, shouldEnter: true})
+            }} 
+            onExploreClick={(projectName:string) => {
+              setActiveProject(projectName)
+              setCurrentView("explore")
+            }}
+            ref={pageRef}
+          />
+      }
+      {
+        currentView === "explore" &&
+          <Explore 
+            project={activeProject}
+            onOpenClick={() => {
+              setProjectStatus({...projectStatus, shouldEnter: true})
+            }}
+            onBackClick={() => {
+              setCurrentView("home");
+              setActiveProject("");
+            }}
+            ref={pageRef}
+          />
+    
+      }
 
-      <Project project={activeProject} status={projectStatus} setStatus={setProjectStatus} homeRef={homeRef} />
+    <Project project={activeProject} status={projectStatus} setStatus={setProjectStatus} pageRef={pageRef} />
     </>
   );
 }
