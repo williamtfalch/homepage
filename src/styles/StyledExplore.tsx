@@ -5,14 +5,18 @@ interface IButtonProps {
 }
 
 export const StyledExplore = styled.div`
-  display: flex;
-  flex-direction: column;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  align-items: flex-start;
-  width: calc(192px * 4);
+  width: 100vw;
+  height: 100vh;
+  > div { 
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    align-items: flex-start;
+    width: calc(192px * 4);
+  }
 `;
 
 export const StyledPreview = styled.div`

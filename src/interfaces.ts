@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction } from "react"
+
 export interface IProject {
   id: string,
   title: string,
@@ -22,14 +24,14 @@ export interface IProjectStatus {
 export interface IProjectProps {
   project: string | undefined,
   status: IProjectStatus,
-  setStatus: (status:IProjectStatus) => void,
+  setStatus: Dispatch<SetStateAction<IProjectStatus>>,
   pageRef: React.Ref<HTMLDivElement>
 }
 
 export interface ILoadMethodProps {
   project: string | undefined,
   status: IProjectStatus,
-  setStatus: (status:IProjectStatus) => void,
+  setStatus: Dispatch<SetStateAction<IProjectStatus>>,
   pageRef: React.Ref<HTMLDivElement>,
   children: React.ReactNode
 }
@@ -37,7 +39,7 @@ export interface ILoadMethodProps {
 export interface ILoadAnimationProps {
   project: string | undefined,
   status: IProjectStatus,
-  setStatus: (status:IProjectStatus) => void,
+  setStatus: Dispatch<SetStateAction<IProjectStatus>>,
   pageRef: React.Ref<HTMLDivElement>,
   onEnter: (context: CanvasRenderingContext2D | null, onEntered: () => void) => void,
   onExit: (context: CanvasRenderingContext2D | null, onEntered: () => void, screenshot: HTMLImageElement) => void

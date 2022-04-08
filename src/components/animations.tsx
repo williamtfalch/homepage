@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react"
 import { useWindowDimensions } from '../hooks'
-import { ILoadAnimationProps, ILoadMethodProps } from '../interfaces'
+import { ILoadAnimationProps, ILoadMethodProps, IProjectStatus } from '../interfaces'
 import { toPng } from 'html-to-image'
 import styled from "styled-components"
 import Draw from '../libraries/Draw'
@@ -15,75 +15,75 @@ interface ICanvasProps {
 ////////////////////////////////////////////////////////////////
 
 const StyledLoadAnimation = styled.div<ICanvasProps>`
-  //width: 100vw;
-  //height: 100vh;
   position: absolute;
   top: 0px;
   left: 0px;
 
   > canvas:first-child {
-    width: 10vw;
-    height: 10vh;
+    width: 100vw;
+    height: 100vh;
     position: absolute;
-    z-index: ${props => props.displayCanvas ? 2000 : 0};
+    z-index: ${props => props.displayCanvas ? 4000 : 0};
   }
 `;
 
 ////////////////////////////////////////////////////////////////
 
 const LoadAnimation: React.FC<ILoadAnimationProps> = ({ status, setStatus, pageRef, children, onEnter, onExit }) => {
-  const { width, height }                                 = useWindowDimensions()
-  const [screenshotHasLoaded, setScreenshotHasLoaded]     = useState(false)
-  const [hideOverlay, setHideOverlay]                     = useState(true)
-  const [landingPageScreenshot, setLandingPageScreenshot] = useState<HTMLImageElement>(new Image())
-  const [projectReady, setProjectReady]                   = useState(false)
-  const canvasRef                                         = useRef(null)
+  const { width, height }                             = useWindowDimensions()
+  const [screenshotHasLoaded, setScreenshotHasLoaded] = useState(false)
+  const [hideOverlay, setHideOverlay]                 = useState(true)
+  const [refPageScreenshot, setRefPageScreenshot]     = useState<HTMLImageElement>(new Image())
+  const [projectReady, setProjectReady]               = useState(false)
+  const canvasRef                                     = useRef(null)
   let canvas: HTMLCanvasElement
   let context: CanvasRenderingContext2D | null
 
-  const onScreenshotReady = (screenshot: HTMLImageElement) => {
-    canvas  = canvasRef.current as unknown as HTMLCanvasElement // crazy stuff
+
+
+  const processScreenshot = (screenshot: HTMLImageElement) => {
+    canvas  = canvasRef.current as unknown as HTMLCanvasElement // TODO
     context = canvas.getContext('2d')
 
-    Draw.drawRectangle(context, 0, 0, width, height, '#fdf8ed')
-    Draw.drawImage(context, screenshot, 0, 0, width, height, 0, 0, width, height)
-
-    setLandingPageScreenshot(screenshot)
+    setRefPageScreenshot(screenshot)
     setScreenshotHasLoaded(true)
   }
 
-  useEffect(() => {
-    setHideOverlay(false)
-  }, [screenshotHasLoaded])
+  const captureScreenshot = (processor:(screenshot:HTMLImageElement) => void) => {
+    if (pageRef && "current" in pageRef && pageRef.current) { // TODO
+      const captureElement = pageRef.current
 
+      toPng(captureElement)
+      .then(function (dataUrl) {
+        const img  = new Image()
+        img.src    = dataUrl
+        img.onload = () => processor(img)
+      })
+    }
+  }
 
-  // creates screenshot of landing page and starts start pipeline when shouldEnter turns true
+  // captures screenshot of reffed page and generally starts pipeline
   useEffect(() => {
     if (status.shouldEnter) {
-      if (pageRef && "current" in pageRef && pageRef.current) {
-        const elem: HTMLDivElement = pageRef.current
-
-        toPng(elem)
-          .then(function (dataUrl) {
-            const img  = new Image()
-            img.src    = dataUrl
-            img.onload = () => onScreenshotReady(img)
-          })
-      }
+      captureScreenshot(processScreenshot)
     }
   }, [status.shouldEnter])
 
-  // TODO
+  // when screenshot loads, draw it and continue entering pipeline
   useEffect(() => {
     if (screenshotHasLoaded) {
+      setHideOverlay(false)
+
       canvas = canvasRef.current as unknown as HTMLCanvasElement // crazy stuff
       context = canvas.getContext('2d')
+
+      Draw.drawScreenshot(context, refPageScreenshot, width, height, '#fdf8ed')
 
       onEnter(
         context,
         () => {
           setHideOverlay(true)
-          setStatus({...status, hasEntered: true})
+          setStatus((prev:IProjectStatus) => ({...prev, hasEntered: true}))
         }
       )
     }
@@ -101,13 +101,14 @@ const LoadAnimation: React.FC<ILoadAnimationProps> = ({ status, setStatus, pageR
         context,
         () => {
           setHideOverlay(true)
-          setStatus({...status, hasExited: true})
+          setStatus(prev => ({...prev, hasExited: true}))
+          setScreenshotHasLoaded(false)
         },
-        landingPageScreenshot
+        refPageScreenshot
       )
     }
   }, [status.shouldExit])
-
+ 
   return (
     <StyledLoadAnimation displayCanvas={screenshotHasLoaded && !hideOverlay}>
       <canvas ref={canvasRef} width={width} height={height} />

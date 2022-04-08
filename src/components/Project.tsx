@@ -154,7 +154,7 @@ const Project: React.FC<IProjectProps> = (props) => {
     <>
       {   
         props.project && props.status.hasEntered &&
-          <BackButton onClick={() => props.setStatus({...props.status, shouldExit: true})}>Back</BackButton>
+          <BackButton onClick={() => props.setStatus(prev => ({...prev, shouldExit: true}))}>Back</BackButton>
       }
 
       {

@@ -79,7 +79,7 @@ const Preview:React.FC<IPreviewProps> = ({projectName, numPreviews}) => {
   return (
     <StyledPreview>
       <img src={currentPreview} alt="" />
-
+  
       <div>
         {
           numPreviews > 1 &&
@@ -117,9 +117,11 @@ const Explore = forwardRef<HTMLDivElement, IExploreProps>((props, ref) => {
 
   return (
     <StyledExplore ref={ref}>
-      <Header title={project.title} onBackClick={() => props.onBackClick()} />
-      <Preview projectName={project.id} numPreviews={project.numPreviews} />
-      <Information information={project} onOpenClick={props.onOpenClick} />
+      <div>
+        <Header title={project.title} onBackClick={() => props.onBackClick()} />
+        <Preview projectName={project.id} numPreviews={project.numPreviews} />
+        <Information information={project} onOpenClick={props.onOpenClick} />
+      </div>
     </ StyledExplore>
   )
 });

@@ -7,6 +7,9 @@ import App from './App';
 //import {} from 'styled-components/cssprop'
 import reportWebVitals from './reportWebVitals';
 
+// TODO
+console.warn = () => ""
+
 ReactDOM.render(
   <React.StrictMode>
     <GlobalStyles />
