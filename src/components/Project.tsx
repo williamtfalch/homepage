@@ -5,8 +5,8 @@ import styled from "styled-components"
 import { toPng } from 'html-to-image'
 import { IProjectStatus, IProjectProps, ILoadMethodProps } from '../interfaces'
 import { LoadAnimationRandomSquares } from './animations'
-import GravityApp from '../projects/gravity/src/GravityApp'
-import GameoflifeApp from '../projects/gameoflife/src/GameoflifeApp'
+import GravityProject from '../projects/gravity/src/App'
+import GameoflifeProject from '../projects/gameoflife/src/App'
 
 ////////////////////////////////////////////////////////////////
 
@@ -29,7 +29,7 @@ const BackButton = styled.span`
   position: fixed;
   top: 20px;
   right: 20px;
-  z-index: 1000;
+  z-index: 3100;
   background-color: #D8E2DC;
   cursor: pointer;
   padding: 8px 30px;
@@ -153,21 +153,21 @@ const Project: React.FC<IProjectProps> = (props) => {
   return (
     <>
       {   
-        props.project && props.status.hasEntered && !props.status.shouldExit &&
-          <BackButton onClick={() => props.setStatus({...props.status, shouldExit: true})}>Back</BackButton>
+        props.project && props.status.hasEntered &&
+          <BackButton onClick={() => props.setStatus(prev => ({...prev, shouldExit: true}))}>Back</BackButton>
       }
 
       {
-        props.status.shouldEnter && !props.status.hasExited &&
+        (props.status.shouldEnter || props.status.hasEntered || props.status.shouldExit) && !props.status.hasExited &&
           <LoadMethod {...props}>
             {
               props.project === "gravity" &&
-                <GravityApp />
+                <GravityProject />
             }
 
             {
               props.project === "gameoflife" &&
-                <GameoflifeApp />
+                <GameoflifeProject />
             }
           </LoadMethod>
       }

@@ -1,35 +1,89 @@
-import {forwardRef} from 'react'
+import {forwardRef, useEffect, useState} from 'react'
 import projectJSON from './static/projects.json'
 import { StyledHome, StyledProjectRow, StyledProject } from './styles/StyledHome'
 import {getWebsiteDisplayName} from './utils'
 import { IProject } from './interfaces'
+import { useWindowDimensions } from './hooks'
 
 interface IHomeProps extends React.ComponentPropsWithoutRef<'div'>{
-  onProjectClick:(projectName:string) => void,
+  onOpenClick: (projectName:string) => void,
+  onExploreClick: (projectName:string) => void,
 }
 
 interface IProjectRowProps {
   projectType: string,
-  onProjectClick:(projectName:string) => void
+  onOpenClick: (projectName:string) => void,
+  onExploreClick: (projectName:string) => void,
 }
 
 interface IProjectProps extends IProject {
-  onProjectClick:(projectName:string) => void,
+  numProjects: number,
+  onOpenClick: (projectName:string) => void,
+  onExploreClick: (projectName:string) => void,
 }
 
 ///////////////////////////////////////////////////////////
 
 const ProjectRow = (props:IProjectRowProps) => {
-  const projectType:string                  = props.projectType
-  const projects:Record<string, IProject[]> = projectJSON
+  const { width, height }                         = useWindowDimensions()
+  const [numProjectsShown, setNumProjectsShown]   = useState(4)
+  const [currentStartIndex, setCurrentStartIndex] = useState(0)
+  const projectType:string                        = props.projectType
+  const filteredProjects:IProject[]               = projectJSON.filter(project => project.capacity === projectType)
+  const capacity2heading:Record<string,string>    = {
+    "personal": "Hobby projects",
+    "professional": "Professional life"
+  }
+
+  const changeStartIndex = (change:number) => {
+    const newIndex = currentStartIndex + change
+
+    if ((numProjectsShown + newIndex <= filteredProjects.length) && newIndex >= 0) {
+      setCurrentStartIndex(newIndex)
+    }
+  }
+
+  useEffect(() => {
+    const idealProjectWidth             = 350
+    const availableWidth                = 0.8 * width
+
+    const numProjectsDisplayable        = Math.ceil(availableWidth/idealProjectWidth)
+
+    setNumProjectsShown(numProjectsDisplayable)
+  }, [width])
+
+
+  useEffect(() => {
+    setCurrentStartIndex(0)
+  }, [width, height])
 
   return (
-    <StyledProjectRow>
-      <h1>{projectType.slice(0,1).toUpperCase() + projectType.slice(1).toLowerCase().replace("_", " ")}</h1>
+    <StyledProjectRow offset={currentStartIndex} numProjects={numProjectsShown}>
+      <h2>{capacity2heading[projectType]}</h2>
 
       <div>
+        <div>
+          {
+            filteredProjects.map(project => (
+              <Project key={project.title} numProjects={numProjectsShown} onOpenClick={props.onOpenClick} onExploreClick={props.onExploreClick} {...project}></Project>
+            ))
+          }
+        </div>
+
         {
-          projects[projectType].map(project => <Project key={project.title} onProjectClick={props.onProjectClick} {...project}></Project>)
+          currentStartIndex > 0 &&
+            <div className="gradient_left" onClick={() => changeStartIndex(-1)}>
+              <div />
+              <div />
+            </div>
+        }
+        {
+          numProjectsShown + currentStartIndex < filteredProjects.length &&
+            <div className="gradient_right" onClick={() => changeStartIndex(1)}>
+              <div />
+              <div />
+            </div>
+          
         }
       </div>
     </StyledProjectRow>
@@ -38,35 +92,50 @@ const ProjectRow = (props:IProjectRowProps) => {
 
 
 const Project:React.FC<IProjectProps> = (props) => {
-  const image = require(`./static/${props.imageSource}`).default
+  const icon = require(`./static/${props.id}_icon.png`).default
  
   return (
-    <StyledProject>
+    <StyledProject numProjects={props.numProjects}>
       <div>
-        <img src={image} />
+        <img src={icon} />
 
         <div>
           {
-            ("page" in props) &&
-              <a onClick={() => props.onProjectClick(props.page as string)} className="explore">Explore</a>
+            props.type === "preview" &&
+              <a onClick={() => props.onExploreClick(props.id) } className="grow">Explore</a>
+          }
+          
+          {
+            (props.capacity === "personal" && props.type === "web application") &&
+              <a onClick={() => props.onOpenClick(props.id)} className="grow">Open</a>
           }
 
           {
-            props.links.map(link => {
-              const logo = require(`./static/${link.type}.png`).default
-
-              return (
-                <a key={link.type} href={link.url}>
-                  <img src={logo} />
-                  <span>{getWebsiteDisplayName(link.type)}</span>
-                </a>
-              )
-            })
+            props.links.length > 0 &&
+              <>
+                {
+                  props.links.map(link => {
+                    if (link.type === "web") {
+                      return <a href={link.url}  className="grow">Visit</a>
+                    } else {
+                      const logo = require(`./static/${link.type}.png`).default
+  
+                      return (
+                        <a key={link.type} href={link.url}>
+                          <img src={logo} />
+                          <span>{getWebsiteDisplayName(link.type)}</span>
+                        </a>
+                      )
+                    }
+                  })
+                }
+              </>
           }
+
         </div>
       </div>
 
-      <h1>{props.title}</h1>
+      <h3>{props.title}</h3>
     </StyledProject>
   )
 }
@@ -75,9 +144,11 @@ const Project:React.FC<IProjectProps> = (props) => {
 
 const Home = forwardRef<HTMLDivElement, IHomeProps>((props, ref) => (
   <StyledHome ref={ref}>
-    {
-      ["hobby_projects", "professional_life"].map(sp => <ProjectRow projectType={sp} key={sp} onProjectClick={props.onProjectClick} />)
-    }
+    <div>
+      {
+        ["personal", "professional"].map(sp => <ProjectRow projectType={sp} key={sp} onOpenClick={props.onOpenClick} onExploreClick={props.onExploreClick} />)
+      }
+    </div>
   </ StyledHome>
 ));
 

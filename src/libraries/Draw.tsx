@@ -16,7 +16,12 @@ const Draw = {
     if (context) {
       context.drawImage(image, sourceStartX, sourceStartY, sourceWidth, sourceHeight, destinationStartX, destinationStartY, destinationWidth, destinationHeight)
     }
-  }
+  },
+
+  drawScreenshot: function(context: CanvasRenderingContext2D | null, screenshot: HTMLImageElement, width: number, height: number, fill: string):void {
+    this.drawRectangle(context, 0, 0, width, height, fill) // fills in "transparent" background with background color, isn't captured
+    this.drawImage(context, screenshot, 0, 0, width, height, 0, 0, width, height)
+  },
 }
 
 export default Draw

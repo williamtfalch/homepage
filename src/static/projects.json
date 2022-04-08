@@ -1,98 +1,120 @@
-{
-  "hobby_projects": [
-    {
-      "title"       : "this",
-      "description" : "",
-      "tags"        : ["TypeScript", "React"],
-      "type"        : "application",
-      "imageSource" : "website.png",
-      "links"       : [
-        {
-          "type": "github",
-          "url": "https://www.github.com/williamtfalch/homepage"
-        }
-      ]
-    },
-    {
-      "title"       : "Game of Life",
-      "description" : "John Conway's Game of Life. Create an initial configuration, click Play, and enjoy.",
-      "tags"        : ["Javascript", "React"],
-      "type"        : "application",
-      "imageSource" : "gameoflife.png",
-      "page"        : "gameoflife",
-      "links"       : [
-        {
-          "type": "github",
-          "url": "https://www.github.com/williamtfalch/gameoflife"
-        }
-      ]
-    },
-    {
-      "title"       : "Gravity",
-      "description" : "2D planet simulation. Use it as a calming screensaver, or create havoc.",
-      "tags"        : ["Javascript", "React"],
-      "type"        : "application",
-      "imageSource" : "gravity.png",
-      "page"        : "gravity",
-      "links"       : [
-        {
-          "type": "github",
-          "url": "https://www.github.com/williamtfalch/gravity"
-        }
-      ]
-    },
-    {
-      "title"       : "Hyper cat cursor",
-      "description" : "Cat cursor for your Hyper.js terminal. Cute, productive-enhancing, and eco-friendly",
-      "tags"        : ["Javascript", "Hyper.js"],
-      "type"        : "package",
-      "imageSource" : "cat.png",
-      "links"       : [
-        {
-          "type": "github",
-          "url": "https://www.github.com/williamtfalch/hyper-kitten-cursor"
-        },
-        {
-          "type": "npm",
-          "url": "https://www.npmjs.com/package/hyper-kitten-cursor"
-        }
-      ]
-    }
-  ],
-  "professional_life": [
-    {
-      "title"       : "Web Bluetooth library",
-      "description" : "A Web Bluetooth library that let's you interact with Nordic Semiconductor's Thingy:52.",
-      "tags"        : ["Javascript", "Web Bluetooth"],
-      "type"        : "package",
-      "imageSource" : "thingy52.png",
-      "links"       : [
-        {
-          "type": "github",
-          "url": "https://www.github.com/NordicPlayground/Nordic-Thingy52-Thingyjs"
-        },
-        {
-          "type": "npm",
-          "url": "https://www.npmjs.com/package/thingy52_web_bluetooth"
-        }
-      ]
-    },
-    {
-      "title"       : "React web application",
-      "description" : "Web application that examplifies interaction with the aforementioned library.",
-      "tags"        : ["Javascript", "Web Bluetooth"],
-      "type"        : "webpage",
-      "imageSource" : "thingy52.png",
-      "links"       : [
-        {
-          "type": "web",
-          "url": "https://developer.nordicsemi.com/thingy/52/"
-        },
-        {
-          "type": "github",
-          "url": "https://github.com/NordicPlayground/webapp-nordic-thingy"
-        }
-      ]
-    }
-  ]
-}
+
+[
+  {
+    "id"          : "piano",
+    "title"       : "MeDe",
+    "description" : "MeDe is a web application currently in development that teaches you how to play the piano. From simple scales and chords, to entire compositions, MeDe will guide you in your education. Just plug your keyboard into your computer, and start learning today!",
+    "tags"        : ["TypeScript", "React", "Web MIDI"],
+    "type"        : "preview",
+    "capacity"    : "personal",
+    "numPreviews" : 3,
+    "links"       : [
+      {
+        "type": "github",
+        "url": "https://www.github.com/williamtfalch/homepage"
+      }
+    ]
+  },
+  {
+    "id"          : "homepage",
+    "title"       : "this",
+    "description" : "",
+    "tags"        : ["TypeScript", "React"],
+    "type"        : "website",
+    "capacity"    : "personal",
+    "numPreviews" : 0,
+    "links"       : [
+      {
+        "type": "github",
+        "url": "https://www.github.com/williamtfalch/homepage"
+      }
+    ]
+  },
+  {
+    "id"          : "gravity",
+    "title"       : "Gravity",
+    "description" : "2D planet simulation. Use it as a calming screensaver, or create havoc.",
+    "tags"        : ["Javascript", "React"],
+    "type"        : "web application",
+    "capacity"    : "personal",
+    "numPreviews" : 1,
+    "links"       : [
+      {
+        "type": "github",
+        "url": "https://www.github.com/williamtfalch/gravity"
+      }
+    ]
+  },
+  {
+    "id"          : "gameoflife",
+    "title"       : "Game of Life",
+    "description" : "John Conway's Game of Life. Create an initial configuration, click Play, and enjoy.",
+    "tags"        : ["Javascript", "React"],
+    "type"        : "web application",
+    "capacity"    : "personal",
+    "numPreviews" : 1,
+    "links"       : [
+      {
+        "type": "github",
+        "url": "https://www.github.com/williamtfalch/gameoflife"
+      }
+    ]
+  },
+  {
+    "id"          : "hypercatcursor",
+    "title"       : "Hyper cat cursor",
+    "description" : "Cat cursor for your Hyper.js terminal. Cute, productive-enhancing, and eco-friendly",
+    "tags"        : ["Javascript", "Hyper.js"],
+    "type"        : "package",
+    "capacity"    : "personal",
+    "numPreviews" : 0,
+    "links"       : [
+      {
+        "type": "github",
+        "url": "https://www.github.com/williamtfalch/hyper-kitten-cursor"
+      },
+      {
+        "type": "npm",
+        "url": "https://www.npmjs.com/package/hyper-kitten-cursor"
+      }
+    ]
+  },
+  {
+    "id"          : "nordicwebbluetooth",
+    "title"       : "Web Bluetooth library",
+    "description" : "A Web Bluetooth library that let's you interact with Nordic Semiconductor's Thingy:52.",
+    "tags"        : ["Javascript", "Web Bluetooth"],
+    "type"        : "library",
+    "capacity"    : "professional",
+    "numPreviews" : 0,
+    "links"       : [
+      {
+        "type": "github",
+        "url": "https://www.github.com/NordicPlayground/Nordic-Thingy52-Thingyjs"
+      },
+      {
+        "type": "npm",
+        "url": "https://www.npmjs.com/package/thingy52_web_bluetooth"
+      }
+    ]
+  },
+  {
+    "id"          : "nordicreact",
+    "title"       : "React web application",
+    "description" : "Web application that examplifies interaction with the aforementioned library.",
+    "tags"        : ["Javascript", "Web Bluetooth"],
+    "type"        : "web application",
+    "capacity"    : "professional",
+    "numPreviews" : 0,
+    "links"       : [
+      {
+        "type": "web",
+        "url": "https://developer.nordicsemi.com/thingy/52/"
+      },
+      {
+        "type": "github",
+        "url": "https://github.com/NordicPlayground/webapp-nordic-thingy"
+      }
+    ]
+  }
+]
