@@ -7,6 +7,7 @@ interface IButtonProps {
 export const StyledExplore = styled.div`
   width: 100vw;
   height: 100vh;
+  
   > div { 
     display: flex;
     flex-direction: column;
@@ -15,7 +16,7 @@ export const StyledExplore = styled.div`
     top: 50%;
     transform: translate(-50%, -50%);
     align-items: flex-start;
-    width: calc(192px * 4);
+    width: calc(192px * 6);
   }
 `;
 
@@ -24,16 +25,42 @@ export const StyledPreview = styled.div`
   flex-direction: column;
   width: inherit;
 
+  > div.loading {
+    width: inherit;
+    height: calc(96px * 6);
+    border: 2px solid #D8E2DC;
+    border-radius: 2px;
+    position: relative;
+
+    > div {
+      position: fixed;
+      top:calc(-100% - 40px); right:-100%; left:-100%; bottom:-100%;
+      margin:auto;
+      animation: loading 2s linear infinite;
+      border: 1px solid #cca254;
+      border-left: 1px solid transparent;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+    }
+
+    @keyframes loading {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  }
+
   > img {
-    width: calc(inherit - 4px);
+    width: inherit;
     border: 2px solid #D8E2DC;
     border-radius: 2px;
   }
 
-  > div {
+  > div:last-of-type {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    cursor: pointer;
   }
 `;
 
@@ -51,20 +78,25 @@ export const StyledInformation = styled.div`
   flex-direction: row;
   justify-content: space-between;
 
-  > div {
+  > div:first-of-type {
+    width: calc(0.80 * 100%);
+    margin: 20px 10px 0px 5px;
     display: flex;
     flex-direction: column;
-    padding: 0px 10px;
 
-    > span {
-      margin: 10px 0px 10px 10px;
-      color: #2b2d2c;
+    > p {
+      line-height: 20px;
     }
 
     > span:last-child {
+      margin-top: 10px;
       font-size: 13px;
       opacity: 0.7;
     }
+  }
+
+  > div:last-of-type {
+    margin: 20px 5px 0px 0px;
 
     > a {
       position: relative;

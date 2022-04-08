@@ -40,13 +40,14 @@ const Preview:React.FC<IPreviewProps> = ({projectName, numPreviews}) => {
   const [currentPreview, setCurrentPreview]           = useState<string | undefined>(undefined)
   const [skipNextInterval, setSkipNextInterval]       = useState(false)
   const [pauseInterval, setPauseInterval]             = useState(false)
+  //const [isLoadingImage, setIsLoadingImage]           = useState(false)
 
   const increasePreviewIndex = () => {
     const nextIndex = currentPreviewIndex !== numPreviews ? currentPreviewIndex + 1 : 1
     setCurrentPreviewIndex(nextIndex)
   }
 
-  const updatePreview = () => {
+  const loadPreviewImage = () => {
     const preview = require(`./static/${projectName}_${currentPreviewIndex}.png`).default
     setCurrentPreview(preview)
   }
@@ -59,10 +60,12 @@ const Preview:React.FC<IPreviewProps> = ({projectName, numPreviews}) => {
         setSkipNextInterval(false)
       }
     }
-  }, 3000)
+  }, 6000)
 
   useEffect(() => {
-    updatePreview()
+    if (numPreviews !== 0) {
+      loadPreviewImage()
+    }
   }, [currentPreviewIndex])
 
   useEffect(() => {
@@ -71,18 +74,27 @@ const Preview:React.FC<IPreviewProps> = ({projectName, numPreviews}) => {
     }
 
     if (numPreviews !== 0) {
-      updatePreview()
+      loadPreviewImage()
     }
 
   }, [])
 
   return (
     <StyledPreview>
-      <img src={currentPreview} alt="" />
+      {
+        !currentPreview &&
+        <div className="loading">
+          <div />
+        </div>
+      }
+      {
+        currentPreview &&
+          <img src={currentPreview} alt="" />
+      }
   
       <div>
         {
-          numPreviews > 1 &&
+          currentPreview && numPreviews > 1 &&
             Array(numPreviews).fill(0).map((source, index) => <StyledPreviewButton key={source} active={currentPreviewIndex === index + 1} onClick={() => { setCurrentPreviewIndex(index + 1); setSkipNextInterval(true)}} />)
         }
       </div>
@@ -93,6 +105,10 @@ const Preview:React.FC<IPreviewProps> = ({projectName, numPreviews}) => {
 const Information:React.FC<IInformationProps> = ({information, onOpenClick}) => (
   <StyledInformation>
     <div>
+      <p>{information.description}</p>
+      <span>{information.tags.reduce((tagLine, tag) => tagLine + ` #${tag}\xa0`, "")}</span>
+    </div>
+    <div>
       {
         information.type === "web application" &&
           <StyledInformationButton key={information.type} onClick={() => onOpenClick()} active={true}>Open</StyledInformationButton>
@@ -101,10 +117,6 @@ const Information:React.FC<IInformationProps> = ({information, onOpenClick}) => 
       {
         //information.links.map(link => <StyledInformationButton key={link.type} href={link.url} active={false}>{link.type}</StyledInformationButton>)
       }
-    </div>
-    <div>
-      <span>{information.description}</span>
-      <span>{information.tags.reduce((tagLine, tag) => tagLine + `#${tag} `, "")}</span>
     </div>
   </StyledInformation>
 )

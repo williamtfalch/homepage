@@ -163,7 +163,7 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   p {
-    font-size: 14px;
+    font-size: 16px;
   }
 
   a {

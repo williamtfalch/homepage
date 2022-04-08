@@ -101,11 +101,37 @@ const Project:React.FC<IProjectProps> = (props) => {
 
         <div>
           {
+            props.type === "preview" &&
+              <a onClick={() => props.onExploreClick(props.id) } className="grow">Explore</a>
+          }
+          
+          {
             (props.capacity === "personal" && props.type === "web application") &&
-              <a onClick={() => props.onOpenClick(props.id)} className="open">Open</a>
+              <a onClick={() => props.onOpenClick(props.id)} className="grow">Open</a>
           }
 
-          <a onClick={() => props.onExploreClick(props.id)} className="">Explore</a>
+          {
+            props.links.length > 0 &&
+              <>
+                {
+                  props.links.map(link => {
+                    if (link.type === "web") {
+                      return <a href={link.url}  className="grow">Visit</a>
+                    } else {
+                      const logo = require(`./static/${link.type}.png`).default
+  
+                      return (
+                        <a key={link.type} href={link.url}>
+                          <img src={logo} />
+                          <span>{getWebsiteDisplayName(link.type)}</span>
+                        </a>
+                      )
+                    }
+                  })
+                }
+              </>
+          }
+
         </div>
       </div>
 

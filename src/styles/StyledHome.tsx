@@ -195,14 +195,14 @@ export const StyledProject = styled.div<IProjectProps>`
         border-bottom: none;
       }
 
-      > a.open {
+      > a.grow {
         flex-basis: 2;
         flex-grow: 2;
         width: 100%;
         flex-direction: column;
       }
 
-      > a:not(.open) {
+      > a:not(.grow) {
         flex-basis: 1;
         flex-grow: 1;
         position: relative;
@@ -213,6 +213,11 @@ export const StyledProject = styled.div<IProjectProps>`
           height: 20px;
           margin-right: 10px;
         }
+      }
+
+      > div {
+        display: flex;
+        flex-direction: row;
       }
     }
    

@@ -3,11 +3,11 @@
   {
     "id"          : "piano",
     "title"       : "MeDe",
-    "description" : "Learn how to play the piano with MeDe. Plug in your electronic keyboard and start learning!",
+    "description" : "MeDe is a web application currently in development that teaches you how to play the piano. From simple scales and chords, to entire compositions, MeDe will guide you in your education. Just plug your keyboard into your computer, and start learning today!",
     "tags"        : ["TypeScript", "React", "Web MIDI"],
     "type"        : "preview",
     "capacity"    : "personal",
-    "numPreviews" : 0,
+    "numPreviews" : 3,
     "links"       : [
       {
         "type": "github",
