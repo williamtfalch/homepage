@@ -25,12 +25,18 @@ export const StyledPreview = styled.div`
   flex-direction: column;
   width: inherit;
 
-  > div.loading {
+  > div:first-of-type {
     width: inherit;
     height: calc(96px * 6);
     border: 2px solid #D8E2DC;
     border-radius: 2px;
     position: relative;
+
+    > img {
+      position: relative;
+      z-index: 1200;
+      width: inherit;
+    }
 
     > div {
       position: fixed;
@@ -42,18 +48,13 @@ export const StyledPreview = styled.div`
       border-radius: 50%;
       width: 40px;
       height: 40px;
+      z-index: 1100;
     }
 
     @keyframes loading {
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
     }
-  }
-
-  > img {
-    width: inherit;
-    border: 2px solid #D8E2DC;
-    border-radius: 2px;
   }
 
   > div:last-of-type {
@@ -80,12 +81,12 @@ export const StyledInformation = styled.div`
 
   > div:first-of-type {
     width: calc(0.80 * 100%);
-    margin: 20px 10px 0px 5px;
+    margin: 10px 10px 0px 5px;
     display: flex;
     flex-direction: column;
 
     > p {
-      line-height: 20px;
+      line-height: 22px;
     }
 
     > span:last-child {
@@ -130,12 +131,68 @@ export const StyledHeader = styled.div`
     color: #2b2d2c;
   }
 
+  > div {
+    width: 42px;
+    height: 30px;
+    position: relative;
+    top: 15px;
+    cursor: pointer;
+
+    > div {
+      background-color: #2b2d2c;
+      border: 1px solid #2b2d2c;
+      border-radius: 2px;
+      position: absolute;
+      transition: 0.3s;
+    }
+
+    > div:not(:last-of-type) {
+      width: 10px;
+      right: 21px;
+    }
+
+    > div:nth-child(1) {
+      top: 9px;
+      transform: rotate(-45deg);
+    }
+
+    > div:nth-child(2) {
+      top: 17px;
+      transform: rotate(45deg);
+    }
+
+    > div:nth-child(3) {
+      width: 20px;
+      right: 10px;
+      top: 13px;
+    }
+
+    &:hover {
+      width: 52px;
+
+      > div:not(:last-of-type) {
+        right: 31px;
+      }
+
+      > div:last-of-type {
+        width: 30px;
+      }
+    }
+  }
+
   > span {
-    padding: 10px;
+    margin: 5px 0px;
+    padding: 5px 10px;
     font-weight: normal;
     color: #2b2d2c;
     font-size: 14px;
     cursor: pointer;
     align-self: flex-start;
+    border: 2px solid #c2cbc6;
+    border-radius: 5px;
+
+    &:hover {
+      background-color: #D8E2DC;
+    }
   }
 `;

@@ -5,6 +5,7 @@ import { toPng } from 'html-to-image'
 import styled from "styled-components"
 import Draw from '../libraries/Draw'
 import Utilities from "../libraries/Utilities"
+import { motion, AnimatePresence } from "framer-motion"
 
 ////////////////////////////////////////////////////////////////
 
@@ -232,6 +233,63 @@ export const LoadAnimationClipDiagonally: React.FC<ILoadAnimationProps> = (props
   return <LoadAnimation {...props} onEnter={onEnter} onExit={onExit} />
 }
 */
+
+export const LoadAnimationSlidingSquares: React.FC<ILoadMethodProps> = (props) => {
+  const { width, height } = useWindowDimensions()
+  const side = Math.ceil(width / 500)
+  const numRows = Math.ceil(height / side)
+  const numColumns = Math.ceil(width / side)
+  const updateFrequency = 1
+  const minDirection = Math.min(numRows, numColumns)
+
+  const onEnter = (context: CanvasRenderingContext2D | null, onEntered: () => void) => {
+    let round = 0
+
+    const interval = setInterval(() => {
+      const numRegions = round < numColumns ? Math.min(round, minDirection) : minDirection - (round - numColumns - 1)
+      const startRow = round < numColumns ? 0 : round - numColumns - 1
+
+      for (let i = 0; i < numRegions; i++) {
+        //Draw.clearRectangle()
+        context!.clearRect((Math.max(0, numColumns - round) + i) * side, (numRows - 1 - startRow - i) * side, side, side)
+      }
+
+      round += 1
+
+      if (round > numColumns && numRegions === 0) {
+        onEntered()
+        clearInterval(interval)
+      }
+    }, updateFrequency)
+  }
+
+  const onExit = (context: CanvasRenderingContext2D | null, onExited: () => void, screenshot: HTMLImageElement) => {
+    context!.fillStyle = '#fdf8ed'
+    let round = 0
+
+    const interval = setInterval(() => {
+      const numRegions = round < numColumns ? Math.min(round, minDirection) : minDirection - (round - numColumns - 1)
+      const startRow = (round < minDirection ? round : minDirection) - 1
+
+      for (let i = 0; i < numRegions; i++) {
+        const x = Math.max(0, round - minDirection) + i
+        const y = (startRow - i)
+
+        context!.fillRect(x * side, y * side, side, side)
+        context!.drawImage(screenshot, x * side, y * side, side, side, x * side, y * side, side, side)
+      }
+
+      round += 1
+
+      if (round > minDirection && numRegions === 0) {
+        onExited()
+        clearInterval(interval)
+      }
+    }, updateFrequency)
+  }
+
+  return <LoadAnimation {...props} onEnter={onEnter} onExit={onExit} />
+}
 
 export const LoadAnimationRandomSquares: React.FC<ILoadMethodProps> = (props) => {
   const { width, height }         = useWindowDimensions()

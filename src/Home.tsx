@@ -97,8 +97,10 @@ const Project:React.FC<IProjectProps> = (props) => {
   return (
     <StyledProject numProjects={props.numProjects}>
       <div>
-        <img src={icon} />
-
+        <div>
+          {<img src={icon} />
+          }
+        </div>
         <div>
           {
             props.type === "preview" &&
@@ -134,8 +136,10 @@ const Project:React.FC<IProjectProps> = (props) => {
 
         </div>
       </div>
-
-      <h3>{props.title}</h3>
+      
+      <div>
+        <p>{props.title}</p>
+      </div>
     </StyledProject>
   )
 }
@@ -144,11 +148,11 @@ const Project:React.FC<IProjectProps> = (props) => {
 
 const Home = forwardRef<HTMLDivElement, IHomeProps>((props, ref) => (
   <StyledHome ref={ref}>
-    <div>
+    <>
       {
         ["personal", "professional"].map(sp => <ProjectRow projectType={sp} key={sp} onOpenClick={props.onOpenClick} onExploreClick={props.onExploreClick} />)
       }
-    </div>
+    </>
   </ StyledHome>
 ));
 

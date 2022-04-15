@@ -31,7 +31,13 @@ interface IHeaderProps {
 const Header:React.FC<IHeaderProps> = ({title, onBackClick}) => (
   <StyledHeader>
     <h1>{title}</h1>
-    <span onClick={() => onBackClick()}>Back</span>
+    <div onClick={() => onBackClick()}>
+      <div />
+      <div />
+      <div />
+    </div>
+    {//<span onClick={() => onBackClick()}>Back</span>
+    }
   </StyledHeader>
 )
 
@@ -81,16 +87,14 @@ const Preview:React.FC<IPreviewProps> = ({projectName, numPreviews}) => {
 
   return (
     <StyledPreview>
-      {
-        !currentPreview &&
-        <div className="loading">
+        <div>
+          {
+            currentPreview &&
+              <img src={currentPreview} alt="" />
+          }
+
           <div />
         </div>
-      }
-      {
-        currentPreview &&
-          <img src={currentPreview} alt="" />
-      }
   
       <div>
         {

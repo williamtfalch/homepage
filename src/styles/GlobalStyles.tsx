@@ -169,5 +169,10 @@ export const GlobalStyles = createGlobalStyle`
   a {
     outline: none;
     text-decoration: none;
+    color: #2b2d2c;
+  }
+
+  a:visited {
+    color: #2b2d2c;
   }
 `;
