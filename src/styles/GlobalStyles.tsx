@@ -150,6 +150,10 @@ export const GlobalStyles = createGlobalStyle`
     user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
   }
 
+  h1, h2, h3, p, a, span {
+    font-weight: normal;
+  }
+
   h1 {
     font-size: 22px;
   }
@@ -170,9 +174,9 @@ export const GlobalStyles = createGlobalStyle`
     outline: none;
     text-decoration: none;
     color: #2b2d2c;
-  }
 
-  a:visited {
-    color: #2b2d2c;
+    &:visited {
+      color: #2b2d2c;
+    }
   }
 `;

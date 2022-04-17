@@ -131,68 +131,38 @@ export const StyledHeader = styled.div`
     color: #2b2d2c;
   }
 
+`;
+
+export const StyledBackButton = styled.div`
+  position: relative;
+  left: 10px;
+  width: 50px;
+  height: 50px;
+  background-color: #fdf8ed;
+  cursor: pointer;
+
   > div {
-    width: 42px;
-    height: 30px;
-    position: relative;
-    top: 15px;
-    cursor: pointer;
-
-    > div {
-      background-color: #2b2d2c;
-      border: 1px solid #2b2d2c;
-      border-radius: 2px;
-      position: absolute;
-      transition: 0.3s;
-    }
-
-    > div:not(:last-of-type) {
-      width: 10px;
-      right: 21px;
-    }
-
-    > div:nth-child(1) {
-      top: 9px;
-      transform: rotate(-45deg);
-    }
-
-    > div:nth-child(2) {
-      top: 17px;
-      transform: rotate(45deg);
-    }
-
-    > div:nth-child(3) {
-      width: 20px;
-      right: 10px;
-      top: 13px;
-    }
-
-    &:hover {
-      width: 52px;
-
-      > div:not(:last-of-type) {
-        right: 31px;
-      }
-
-      > div:last-of-type {
-        width: 30px;
-      }
-    }
+    width: 22px;
+    height: 2px;
+    background-color: #c2cbc6;
+    position: absolute;
+    border-radius: 2px;
+    left: 11px;
   }
 
-  > span {
-    margin: 5px 0px;
-    padding: 5px 10px;
-    font-weight: normal;
-    color: #2b2d2c;
-    font-size: 14px;
-    cursor: pointer;
-    align-self: flex-start;
-    border: 2px solid #c2cbc6;
-    border-radius: 5px;
+  > div:nth-child(1) {
+    transform: rotate(45deg);
+    top: 31px;
+  }
 
-    &:hover {
-      background-color: #D8E2DC;
+  > div:nth-child(2) {
+    transform: rotate(-45deg);
+    top: 17px;
+  }
+
+  &:hover {
+    > div {
+      background-color: #979e9a;
     }
   }
 `;

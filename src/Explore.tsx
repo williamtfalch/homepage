@@ -1,6 +1,6 @@
 import React, {forwardRef, useState, useEffect} from 'react'
 import projectJSON from './static/projects.json'
-import { StyledExplore, StyledPreview, StyledInformation, StyledPreviewButton, StyledInformationButton, StyledHeader } from './styles/StyledExplore'
+import { StyledExplore, StyledPreview, StyledInformation, StyledPreviewButton, StyledInformationButton, StyledHeader, StyledBackButton } from './styles/StyledExplore'
 import {getWebsiteDisplayName} from './utils'
 import { IProject } from './interfaces'
 import { useInterval } from './hooks'
@@ -26,18 +26,23 @@ interface IHeaderProps {
   onBackClick: () => void
 }
 
+interface IBackButtonProps {
+  onClick: () => void
+}
+
 ///////////////////////////////////////////////////////////
+
+const BackButton = ({onClick}:IBackButtonProps) => (
+  <StyledBackButton onClick={() => onClick()}>
+    <div />
+    <div />
+  </StyledBackButton>
+)
 
 const Header:React.FC<IHeaderProps> = ({title, onBackClick}) => (
   <StyledHeader>
     <h1>{title}</h1>
-    <div onClick={() => onBackClick()}>
-      <div />
-      <div />
-      <div />
-    </div>
-    {//<span onClick={() => onBackClick()}>Back</span>
-    }
+    <BackButton onClick={() => onBackClick()} />
   </StyledHeader>
 )
 

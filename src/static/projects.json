@@ -8,12 +8,7 @@
     "type"        : "preview",
     "capacity"    : "personal",
     "numPreviews" : 3,
-    "links"       : [
-      {
-        "type": "github",
-        "url": "https://www.github.com/williamtfalch/homepage"
-      }
-    ]
+    "links"       : []
   },
   {
     "id"          : "homepage",
@@ -48,7 +43,7 @@
   {
     "id"          : "gameoflife",
     "title"       : "Game of Life",
-    "description" : "John Conway's Game of Life. Create an initial configuration, click Play, and enjoy.",
+    "description" : "Conway's Game of Life. Create an initial configuration, click Play, and enjoy.",
     "tags"        : ["Javascript", "React"],
     "type"        : "web application",
     "capacity"    : "personal",
