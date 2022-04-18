@@ -5,18 +5,24 @@ interface IButtonProps {
 }
 
 export const StyledExplore = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   width: 100vw;
   height: 100vh;
-  
+
   > div { 
     display: flex;
     flex-direction: column;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    align-items: flex-start;
+    justify-content: center;
+    align-items: center;
     width: calc(192px * 6);
+  
+  
+    @media (max-width: calc(192px * 6.5)), (max-height: calc(96px * 6.5)) {
+      width: calc(192px * 4);
+    }
   }
 `;
 
@@ -27,15 +33,22 @@ export const StyledPreview = styled.div`
 
   > div:first-of-type {
     width: inherit;
-    height: calc(96px * 6);
     border: 2px solid #D8E2DC;
     border-radius: 2px;
     position: relative;
+    display: flex;
+    height: calc(96px * 6);
+
+    @media (max-width: calc(192px * 6.5)), (max-height: calc(96px * 6.5)) {
+      width: calc(192px * 4);
+      height: calc(96px * 4);
+    }
 
     > img {
       position: relative;
-      z-index: 1200;
       width: inherit;
+      height: inherit;
+      z-index: 1200;
     }
 
     > div {
@@ -80,10 +93,10 @@ export const StyledInformation = styled.div`
   justify-content: space-between;
 
   > div:first-of-type {
-    width: calc(0.80 * 100%);
     margin: 10px 10px 0px 5px;
     display: flex;
     flex-direction: column;
+    flex: 4 4 4;
 
     > p {
       line-height: 22px;
@@ -97,7 +110,8 @@ export const StyledInformation = styled.div`
   }
 
   > div:last-of-type {
-    margin: 20px 5px 0px 0px;
+    display: flex;
+    flex: 1 1 1;
 
     > a {
       position: relative;

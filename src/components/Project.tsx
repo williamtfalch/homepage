@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components"
 import { IProjectProps, ILoadMethodProps } from '../interfaces'
 import { LoadAnimationRandomSquares, LoadAnimationF1 } from './animations'

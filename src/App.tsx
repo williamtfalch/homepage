@@ -40,8 +40,6 @@ const App:React.FunctionComponent = (props) => {
     }
   }, [projectStatus.shouldEnter])
 
-  useEffect(() => console.log(pageRef), [pageRef])
-
   return (
     <>
       {
@@ -71,7 +69,7 @@ const App:React.FunctionComponent = (props) => {
           />
       }
 
-    <Project project={activeProject} status={projectStatus} setStatus={setProjectStatus} pageRef={pageRef} />
+      <Project project={activeProject} status={projectStatus} setStatus={setProjectStatus} pageRef={pageRef} />
     </>
   );
 }

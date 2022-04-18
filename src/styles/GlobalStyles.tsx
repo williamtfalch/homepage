@@ -135,12 +135,8 @@ export const GlobalStyles = createGlobalStyle`
   /* GLOBAL STYLES */
 
   body {
-    font-family: 'Roboto', sans-serif;
-    font-weight: 300;
     background-color: #fdf8ed;
     overflow: hidden;
-    color: #2b2d2c;
-    font-weight: normal;
 
     -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
@@ -150,7 +146,10 @@ export const GlobalStyles = createGlobalStyle`
     user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
   }
 
-  h1, h2, h3, p, a, span {
+  h1, h2, h3, p, a, span, input {
+    font-weight: normal;
+    color: #2b2d2c;
+    font-family: 'Roboto', sans-serif;
     font-weight: normal;
   }
 
@@ -166,14 +165,13 @@ export const GlobalStyles = createGlobalStyle`
     font-size: 18px;
   }
 
-  p {
+  p, input {
     font-size: 16px;
   }
 
   a {
     outline: none;
     text-decoration: none;
-    color: #2b2d2c;
 
     &:visited {
       color: #2b2d2c;

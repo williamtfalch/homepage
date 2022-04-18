@@ -35,7 +35,6 @@ const LoadAnimation: React.FC<ILoadAnimationProps> = ({ status, setStatus, pageR
   const [screenshotHasLoaded, setScreenshotHasLoaded] = useState(false)
   const [hideOverlay, setHideOverlay]                 = useState(true)
   const [refPageScreenshot, setRefPageScreenshot]     = useState<HTMLImageElement>(new Image())
-  const [projectReady, setProjectReady]               = useState(false)
   const canvasRef                                     = useRef(null)
   let canvas: HTMLCanvasElement
   let context: CanvasRenderingContext2D | null
@@ -114,7 +113,7 @@ const LoadAnimation: React.FC<ILoadAnimationProps> = ({ status, setStatus, pageR
     <StyledLoadAnimation displayCanvas={screenshotHasLoaded && !hideOverlay}>
       <canvas ref={canvasRef} width={width} height={height} />
       {
-        children !== undefined && screenshotHasLoaded &&
+        children && screenshotHasLoaded &&
           children
       }
     </ StyledLoadAnimation>

@@ -1,4 +1,4 @@
-import {forwardRef, useEffect, useState} from 'react'
+import {forwardRef, useEffect, useRef, useState} from 'react'
 import projectJSON from './static/projects.json'
 import { StyledHome, StyledProjectRow, StyledProject } from './styles/StyledHome'
 import {getWebsiteDisplayName} from './utils'
@@ -116,14 +116,14 @@ const Project:React.FC<IProjectProps> = (props) => {
             props.links.length > 0 &&
               <>
                 {
-                  props.links.map(link => {
+                  props.links.map((link, i) => {
                     if (link.type === "web") {
-                      return <a href={link.url}  className="grow">Visit</a>
+                      return <a key={i} href={link.url}  className="grow">Visit</a>
                     } else {
                       const logo = require(`./static/${link.type}.png`).default
   
                       return (
-                        <a key={link.type} href={link.url}>
+                        <a key={i} href={link.url}>
                           <img src={logo} />
                           <span>{getWebsiteDisplayName(link.type)}</span>
                         </a>
@@ -144,17 +144,49 @@ const Project:React.FC<IProjectProps> = (props) => {
   )
 }
 
+/*
+{
+  "id"          : "homepage",
+  "title"       : "this",
+  "description" : "",
+  "tags"        : ["TypeScript", "React"],
+  "type"        : "website",
+  "capacity"    : "personal",
+  "numPreviews" : 0,
+  "links"       : [
+    {
+      "type": "github",
+      "url": "https://www.github.com/williamtfalch/homepage"
+    }
+  ]
+}*/
+
 ///////////////////////////////////////////////////////////
 
-const Home = forwardRef<HTMLDivElement, IHomeProps>((props, ref) => (
-  <StyledHome ref={ref}>
-    <>
-      {
-        ["personal", "professional"].map(sp => <ProjectRow projectType={sp} key={sp} onOpenClick={props.onOpenClick} onExploreClick={props.onExploreClick} />)
-      }
-    </>
-  </ StyledHome>
-));
+const Home = forwardRef<HTMLDivElement, IHomeProps>((props, ref) => {
+  const formattedProjects                     = projectJSON.reduce((prev:string[][], project:IProject) => [...prev, [project.id, ...project.tags, project.title, project.type, project.capacity]], [])
+  //const [filteredResults, setFilteredResults] = useState(filterNone())
+
+  const filterNone = () => projectJSON.reduce((prev:string[], project:IProject) => [...prev, project.id], [])
+
+  const onFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const filter          = event.target.value
+    const results         = formattedProjects.filter(project => project.includes(filter))
+
+    //setFilteredResults(results)
+  }
+
+  return (
+    <StyledHome ref={ref}>
+      <input placeholder="Filter.." />
+      <>
+        {
+          ["personal", "professional"].map(sp => <ProjectRow projectType={sp} key={sp} onOpenClick={props.onOpenClick} onExploreClick={props.onExploreClick} />)
+        }
+      </>
+    </ StyledHome>
+  )
+});
 
 Home.displayName = "Home"
 

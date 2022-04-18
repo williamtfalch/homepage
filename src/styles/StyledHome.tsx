@@ -17,6 +17,17 @@ export const StyledHome = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  
+  > input {
+    position: relative;
+    left: calc(0.9 * 100vw - 170px);
+    width: 150px;
+    padding: 8px;
+    background-color: #D8E2DC;
+    outline: none;
+    border: 2px solid #c2cbc6;
+    border-radius: 5px;
+  }
 `;
 
 export const StyledProjectRow = styled.div<IProjectRowProps>`
@@ -49,7 +60,7 @@ export const StyledProjectRow = styled.div<IProjectRowProps>`
       display: flex;
       flex-direction: row;
       position: relative;
-      left: calc((0.1 + ${props => props.offset} * (${props => (-0.8 / props.numProjects)} - 0.005)) * 100vw); // TODO
+      left: calc((0.1 + ${props => props.offset} * (${props => (-0.8 / props.numProjects)} - 0.005)) * 100vw);
       transition: left 0.3s;
     }
 
@@ -152,10 +163,7 @@ export const StyledProject = styled.div<IProjectProps>`
     border-bottom: none;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
-    //display: flex;
-    //flex-direction: column;
     height: 160px;
-
 
     div {
       height: 160px;
