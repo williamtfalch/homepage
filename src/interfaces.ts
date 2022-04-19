@@ -28,19 +28,11 @@ export interface IProjectProps {
   pageRef: React.Ref<HTMLDivElement>
 }
 
-export interface ILoadMethodProps {
-  project: string | undefined,
-  status: IProjectStatus,
-  setStatus: Dispatch<SetStateAction<IProjectStatus>>,
-  pageRef: React.Ref<HTMLDivElement>,
-  children: React.ReactNode
+export interface ILoadMethodProps extends IProjectProps {
+  children: React.ReactNode,
 }
 
-export interface ILoadAnimationProps {
-  project: string | undefined,
-  status: IProjectStatus,
-  setStatus: Dispatch<SetStateAction<IProjectStatus>>,
-  pageRef: React.Ref<HTMLDivElement>,
+export interface ILoadAnimationProps extends IProjectProps {
   onEnter: (context: CanvasRenderingContext2D | null, onEntered: () => void) => void,
   onExit: (context: CanvasRenderingContext2D | null, onEntered: () => void, screenshot: HTMLImageElement) => void
 }

@@ -18,33 +18,27 @@ const App:React.FunctionComponent = (props) => {
 
   useEffect(() => {
     if (projectStatus.hasEntered) {
-      console.log("sen")
       setProjectStatus(prev => ({...prev, shouldEnter: false}))
     }
   }, [projectStatus.hasEntered])
 
   useEffect(() => {
     if (projectStatus.shouldExit) { 
-      console.log("hen")
       setProjectStatus(prev => ({...prev, hasEntered: false}))
     }
   }, [projectStatus.shouldExit])
 
   useEffect(() => {
     if (projectStatus.hasExited) { 
-      console.log("sex")
       setProjectStatus(prev => ({...prev, shouldExit: false}))
     }
   }, [projectStatus.hasExited])
 
   useEffect(() => {
     if (projectStatus.shouldEnter) { 
-      console.log("hex")
       setProjectStatus(prev => ({...prev, hasExited: false}))
     }
   }, [projectStatus.shouldEnter])
-
-  useEffect(() => console.log(pageRef), [pageRef])
 
   return (
     <>
@@ -75,7 +69,7 @@ const App:React.FunctionComponent = (props) => {
           />
       }
 
-    <Project project={activeProject} status={projectStatus} setStatus={setProjectStatus} pageRef={pageRef} />
+      <Project project={activeProject} status={projectStatus} setStatus={setProjectStatus} pageRef={pageRef} />
     </>
   );
 }

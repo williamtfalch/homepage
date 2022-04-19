@@ -1,6 +1,6 @@
 import React, {forwardRef, useState, useEffect} from 'react'
 import projectJSON from './static/projects.json'
-import { StyledExplore, StyledPreview, StyledInformation, StyledPreviewButton, StyledInformationButton, StyledHeader } from './styles/StyledExplore'
+import { StyledExplore, StyledPreview, StyledInformation, StyledPreviewButton, StyledInformationButton, StyledHeader, StyledBackButton } from './styles/StyledExplore'
 import {getWebsiteDisplayName} from './utils'
 import { IProject } from './interfaces'
 import { useInterval } from './hooks'
@@ -26,12 +26,23 @@ interface IHeaderProps {
   onBackClick: () => void
 }
 
+interface IBackButtonProps {
+  onClick: () => void
+}
+
 ///////////////////////////////////////////////////////////
+
+const BackButton = ({onClick}:IBackButtonProps) => (
+  <StyledBackButton onClick={() => onClick()}>
+    <div />
+    <div />
+  </StyledBackButton>
+)
 
 const Header:React.FC<IHeaderProps> = ({title, onBackClick}) => (
   <StyledHeader>
     <h1>{title}</h1>
-    <span onClick={() => onBackClick()}>Back</span>
+    <BackButton onClick={() => onBackClick()} />
   </StyledHeader>
 )
 
@@ -81,21 +92,19 @@ const Preview:React.FC<IPreviewProps> = ({projectName, numPreviews}) => {
 
   return (
     <StyledPreview>
-      {
-        !currentPreview &&
-        <div className="loading">
+        <div>
+          {
+            currentPreview &&
+              <img src={currentPreview} alt="" />
+          }
+
           <div />
         </div>
-      }
-      {
-        currentPreview &&
-          <img src={currentPreview} alt="" />
-      }
   
       <div>
         {
           currentPreview && numPreviews > 1 &&
-            Array(numPreviews).fill(0).map((source, index) => <StyledPreviewButton key={source} active={currentPreviewIndex === index + 1} onClick={() => { setCurrentPreviewIndex(index + 1); setSkipNextInterval(true)}} />)
+            Array(numPreviews).fill(0).map((_, index) => <StyledPreviewButton key={index} active={currentPreviewIndex === index + 1} onClick={() => { setCurrentPreviewIndex(index + 1); setSkipNextInterval(true)}} />)
         }
       </div>
     </StyledPreview>

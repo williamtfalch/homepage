@@ -5,6 +5,7 @@ import { toPng } from 'html-to-image'
 import styled from "styled-components"
 import Draw from '../libraries/Draw'
 import Utilities from "../libraries/Utilities"
+import { motion, AnimatePresence } from "framer-motion"
 
 ////////////////////////////////////////////////////////////////
 
@@ -34,7 +35,6 @@ const LoadAnimation: React.FC<ILoadAnimationProps> = ({ status, setStatus, pageR
   const [screenshotHasLoaded, setScreenshotHasLoaded] = useState(false)
   const [hideOverlay, setHideOverlay]                 = useState(true)
   const [refPageScreenshot, setRefPageScreenshot]     = useState<HTMLImageElement>(new Image())
-  const [projectReady, setProjectReady]               = useState(false)
   const canvasRef                                     = useRef(null)
   let canvas: HTMLCanvasElement
   let context: CanvasRenderingContext2D | null
@@ -113,7 +113,7 @@ const LoadAnimation: React.FC<ILoadAnimationProps> = ({ status, setStatus, pageR
     <StyledLoadAnimation displayCanvas={screenshotHasLoaded && !hideOverlay}>
       <canvas ref={canvasRef} width={width} height={height} />
       {
-        children !== undefined && screenshotHasLoaded &&
+        children && screenshotHasLoaded &&
           children
       }
     </ StyledLoadAnimation>
@@ -280,6 +280,110 @@ export const LoadAnimationRandomSquares: React.FC<ILoadMethodProps> = (props) =>
         clearInterval(interval)
       }
     }, updateFrequency)
+  }
+
+  return <LoadAnimation {...props} onEnter={onEnter} onExit={onExit} />
+}
+
+export const LoadAnimationF1: React.FC<ILoadMethodProps> = (props) => {
+  const { width, height }    = useWindowDimensions()
+  const file                 = require(`../static/f1.png`).default
+  const f1Image              = new Image()
+  f1Image.src                = file
+  
+  const f1ImageDimensions    = {
+    width: 143,
+    height: 33
+  }
+  
+  const delta                = 4
+  const numRows              = 5
+  const numIterationsPerRow  = Math.ceil((width + f1ImageDimensions.width) / delta)
+  const perRowDelay          = Math.ceil(width/20)
+  const totalNumIterations   = numIterationsPerRow + (perRowDelay * (numRows - 1))
+  const rowHeight            = Math.ceil(height / numRows)
+
+  const onEnter = (context: CanvasRenderingContext2D | null, onEntered: () => void) => {
+    let iteration = 0
+
+    const interval = setInterval(() => {
+      const numRowsToDraw = Math.min(1 + Math.floor(iteration / perRowDelay), numRows)
+
+      for (let i = 0; i < numRowsToDraw; i++) {
+        const offset = iteration - (perRowDelay * i)
+
+        if (offset >= 0) {
+          const startY = i * rowHeight
+
+          if (offset < numIterationsPerRow) {
+            const startX = offset * delta
+  
+            Draw.clearRectangle(context, 0, startY, offset * delta, rowHeight)
+            Draw.drawImage(context, f1Image, 0, 0, f1ImageDimensions.width, f1ImageDimensions.height, startX - (f1ImageDimensions.width/2), startY + (rowHeight/2) - (f1ImageDimensions.height/2), f1ImageDimensions.width, f1ImageDimensions.height)
+          } else {
+            const remainingIterations = iteration - numIterationsPerRow
+            const remainingWidth      = f1ImageDimensions.width - (remainingIterations * delta)
+
+            if (remainingWidth > 0) {
+              Draw.clearRectangle(context, 0, startY, width, rowHeight)
+              Draw.drawImage(context, f1Image, 0, 0, remainingWidth, f1ImageDimensions.height, width, startY + (rowHeight/2) - (f1ImageDimensions.height/2), remainingWidth, f1ImageDimensions.height)
+            }
+
+          }
+        }
+      } 
+
+      iteration += 1
+
+      if (iteration > totalNumIterations) {
+        onEntered()
+        clearInterval(interval)
+      }
+    }, 1)
+  }
+
+  const onExit = (context: CanvasRenderingContext2D | null, onExited: () => void, screenshot: HTMLImageElement) => {
+    let iteration = 0
+
+    const interval = setInterval(() => {
+      const numRowsToDraw = Math.min(1 + Math.floor(iteration / perRowDelay), numRows)
+
+      for (let i = 0; i < numRowsToDraw; i++) {
+        const offset = iteration - (perRowDelay * i)
+
+        if (offset >= 0) {
+          const startY = i * rowHeight
+
+          if (offset < numIterationsPerRow) {
+            const startX = offset * delta
+
+            Draw.drawRectangle(context, 0, startY, offset * delta, rowHeight, '#fdf8ed')
+            Draw.drawImage(context, screenshot, 0, startY, offset * delta, rowHeight, 0, startY, offset * delta, rowHeight)
+            Draw.drawImage(context, f1Image, 0, 0, f1ImageDimensions.width, f1ImageDimensions.height, startX - (f1ImageDimensions.width/2), startY + (rowHeight/2) - (f1ImageDimensions.height/2), f1ImageDimensions.width, f1ImageDimensions.height)
+  
+            //Draw.clearRectangle(context, 0, startY, offset * delta, rowHeight)
+            //Draw.drawImage(context, f1Image, 0, 0, f1ImageDimensions.width, f1ImageDimensions.height, startX - f1ImageDimensions.width, startY + (rowHeight/2) - (f1ImageDimensions.height/2), f1ImageDimensions.width, f1ImageDimensions.height)
+          } else {
+            const remainingIterations = iteration - numIterationsPerRow
+            const remainingWidth      = f1ImageDimensions.width - (remainingIterations * delta)
+
+            if (remainingWidth > 0) {
+              Draw.drawRectangle(context, 0, startY, width, rowHeight, '#fdf8ed')
+              Draw.drawImage(context, screenshot, 0, startY, remainingWidth, rowHeight, 0, startY, remainingWidth, rowHeight)
+              Draw.drawImage(context, f1Image, 0, 0, remainingWidth, f1ImageDimensions.height, width, startY + (rowHeight/2) - (f1ImageDimensions.height/2), remainingWidth, f1ImageDimensions.height)
+            }
+
+          }
+        }
+      } 
+
+      iteration += 1
+
+      if (iteration > totalNumIterations) {
+        onExited()
+        clearInterval(interval)
+      }
+    }, 1)
   }
 
   return <LoadAnimation {...props} onEnter={onEnter} onExit={onExit} />

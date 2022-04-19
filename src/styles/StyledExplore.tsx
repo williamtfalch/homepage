@@ -5,18 +5,32 @@ interface IButtonProps {
 }
 
 export const StyledExplore = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   width: 100vw;
   height: 100vh;
-  
+
   > div { 
     display: flex;
     flex-direction: column;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    align-items: flex-start;
+    justify-content: center;
+    align-items: center;
     width: calc(192px * 6);
+  
+  
+    @media (max-width: calc(192px * 6.5)), (max-height: calc(96px * 6.5)) {
+      width: calc(192px * 5);
+    }
+
+    @media (max-width: calc(192px * 5.5)), (max-height: calc(96px * 5.5)) {
+      width: calc(192px * 4);
+    }
+
+    @media (max-width: calc(192px * 4.5)), (max-height: calc(96px * 4.5)) {
+      width: calc(192px * 3);
+    }
   }
 `;
 
@@ -25,12 +39,35 @@ export const StyledPreview = styled.div`
   flex-direction: column;
   width: inherit;
 
-  > div.loading {
+  > div:first-of-type {
     width: inherit;
-    height: calc(96px * 6);
     border: 2px solid #D8E2DC;
     border-radius: 2px;
     position: relative;
+    display: flex;
+    height: calc(96px * 6);
+
+    @media (max-width: calc(192px * 6.5)), (max-height: calc(96px * 6.5)) {
+      width: calc(192px * 5);
+      height: calc(96px * 5);
+    }
+
+    @media (max-width: calc(192px * 5.5)), (max-height: calc(96px * 5.5)) {
+      width: calc(192px * 4);
+      height: calc(96px * 4);
+    }
+
+    @media (max-width: calc(192px * 4.5)), (max-height: calc(96px * 4.5)) {
+      width: calc(192px * 3);
+      height: calc(96px * 3);
+    }
+
+    > img {
+      position: relative;
+      width: inherit;
+      height: inherit;
+      z-index: 1200;
+    }
 
     > div {
       position: fixed;
@@ -42,18 +79,13 @@ export const StyledPreview = styled.div`
       border-radius: 50%;
       width: 40px;
       height: 40px;
+      z-index: 1100;
     }
 
     @keyframes loading {
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
     }
-  }
-
-  > img {
-    width: inherit;
-    border: 2px solid #D8E2DC;
-    border-radius: 2px;
   }
 
   > div:last-of-type {
@@ -79,13 +111,13 @@ export const StyledInformation = styled.div`
   justify-content: space-between;
 
   > div:first-of-type {
-    width: calc(0.80 * 100%);
-    margin: 20px 10px 0px 5px;
+    margin: 10px 10px 0px 5px;
     display: flex;
     flex-direction: column;
+    flex: 4 4 4;
 
     > p {
-      line-height: 20px;
+      line-height: 22px;
     }
 
     > span:last-child {
@@ -96,7 +128,8 @@ export const StyledInformation = styled.div`
   }
 
   > div:last-of-type {
-    margin: 20px 5px 0px 0px;
+    display: flex;
+    flex: 1 1 1;
 
     > a {
       position: relative;
@@ -130,12 +163,38 @@ export const StyledHeader = styled.div`
     color: #2b2d2c;
   }
 
-  > span {
-    padding: 10px;
-    font-weight: normal;
-    color: #2b2d2c;
-    font-size: 14px;
-    cursor: pointer;
-    align-self: flex-start;
+`;
+
+export const StyledBackButton = styled.div`
+  position: relative;
+  left: 10px;
+  width: 50px;
+  height: 50px;
+  background-color: #fdf8ed;
+  cursor: pointer;
+
+  > div {
+    width: 22px;
+    height: 2px;
+    background-color: #c2cbc6;
+    position: absolute;
+    border-radius: 2px;
+    left: 11px;
+  }
+
+  > div:nth-child(1) {
+    transform: rotate(45deg);
+    top: 31px;
+  }
+
+  > div:nth-child(2) {
+    transform: rotate(-45deg);
+    top: 17px;
+  }
+
+  &:hover {
+    > div {
+      background-color: #979e9a;
+    }
   }
 `;

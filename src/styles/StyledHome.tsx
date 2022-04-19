@@ -10,48 +10,57 @@ interface IProjectProps {
 }
 
 export const StyledHome = styled.div`
-  display: flex;
-  flex-direction:  column;
   position: relative;
   z-index: 1000;
   width: 100vw;
   height: 100vh;
-
-  > div {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  
+  > input {
+    position: relative;
+    left: calc(0.9 * 100vw - 170px);
+    width: 150px;
+    padding: 8px;
+    background-color: #D8E2DC;
+    outline: none;
+    border: 2px solid #c2cbc6;
+    border-radius: 5px;
   }
 `;
 
 export const StyledProjectRow = styled.div<IProjectRowProps>`
-  display: inline-flex;
+  display: flex;
   flex-direction: column;
   position: relative;
   margin-bottom: 15px;
   position: relative;
   width: 100vw;
+  //flex: 1;
+  justify-content: center;
 
   > h2 {
-    padding: 10px 0px 10px 10px;
-    width: 150px;
+    align-self: start;
+    padding: 10px 20px 10px 10px;
     border-bottom: 5px solid #D8E2DC;
     margin-bottom: 5px;
     margin-left: calc(0.1 * 100vw);
-    //background-color: blue;
+    flex-shrink: 0;
   }
 
   > div {
     display: flex;
     flex-direction: row;
     margin: 10px 0px;
+    flex-basis: 1;
+    flex-shrink: 1;
 
     > div:first-of-type {
-      //background-color: green;
       display: flex;
       flex-direction: row;
       position: relative;
-      left: calc((0.1 + ${props => props.offset} * (${props => (-0.8 / props.numProjects)} - 0.005)) * 100vw); // TODO
+      left: calc((0.1 + ${props => props.offset} * (${props => (-0.8 / props.numProjects)} - 0.005)) * 100vw);
       transition: left 0.3s;
     }
 
@@ -115,19 +124,19 @@ export const StyledProjectRow = styled.div<IProjectRowProps>`
   }
 `;
 
-const move = keyframes`
+const moveDown = keyframes`
   from {
     transform: translateY(0%);
   }
 
   to {
-    transform: translateY(calc(-100% - 3px));
+    transform: translateY(calc(-100%));
   }
 `;
 
-const move2 = keyframes`
+const moveUp = keyframes`
   from {
-    transform: translateY(calc(-100% - 3px));
+    transform: translateY(calc(-100%));
   }
 
   to {
@@ -138,46 +147,46 @@ const move2 = keyframes`
 
 export const StyledProject = styled.div<IProjectProps>`
   width: calc(${props => ((0.8 - (0.01 * (props.numProjects - 1))) / props.numProjects)} * 100vw);
-  height: 226px;
-  display: flex;
-  flex-direction: column;
   position: relative;
   align-items: center;
   justify-content: center;
   margin: 0px calc(0.01 * 100vw) 0px 0px;
-  //background-color: red;
-  
-  > div {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+
+  > div:first-of-type {
     width: calc((${props => ((0.8 - (0.01 * (props.numProjects - 1))) / props.numProjects)} * 100vw) - 4px);
     overflow: hidden;
     border: 2px solid #D8E2DC;
     position: relative;
-  }
-
-  > div:first-child {
-    height: 178px;
     border-bottom: none;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
+    height: 160px;
 
-    > * {
-      width: 100%;
-      height: 100%;
-      animation: ${move2} 0.33s 1 forwards;
-    }
-
-    > img {
-      object-fit: none;
-    }
-
-    > div {
-      width: 100%;
+    div {
+      height: 160px;
+      animation: ${moveUp} 0.33s 1 forwards;
       display: flex;
       flex-direction: column;
+    }
+
+    > div:first-of-type {
+      display: flex;
+      align-items: center;
       justify-content: center;
+    }
+
+    > div:last-of-type {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      align-items: center;
 
       > a {
         display: flex;
+        width: 100%;
         justify-content: center;
         align-items: center;
         border-bottom: 1px solid #D8E2DC;
@@ -196,28 +205,17 @@ export const StyledProject = styled.div<IProjectProps>`
       }
 
       > a.grow {
-        flex-basis: 2;
-        flex-grow: 2;
-        width: 100%;
-        flex-direction: column;
+        flex: 2;
       }
 
       > a:not(.grow) {
-        flex-basis: 1;
-        flex-grow: 1;
-        position: relative;
-        flex-direction: row;
+        flex: 1;
 
         > img {
           width: 20px;
           height: 20px;
           margin-right: 10px;
         }
-      }
-
-      > div {
-        display: flex;
-        flex-direction: row;
       }
     }
    
@@ -226,30 +224,35 @@ export const StyledProject = styled.div<IProjectProps>`
     }
   }
 
-  > h3 {
-    width: calc((${props => ((0.8 - (0.01 * (props.numProjects - 1))) / props.numProjects)} * 100vw) - 30px);
+  > div:last-of-type {
+    width: inherit;
+    display: flex;
+    flex: 1;
+    flex-basis: 40px;
+    align-items: center;
+
     border-top: none;
     background-color: #D8E2DC;
-    color: #2b2d2c;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
-    text-align: left;
-    padding: 15px;
-    font-size: 16px;
+
+    > p {
+      text-align: left;
+      padding-left: 15px;
+    }
   }
 
-  &:hover {
-    > div {
-      border-color: #c2cbc6;
-    }
 
+  &:hover {
     > div:first-child {
+      border-color: #c2cbc6;
+
       > * {
-        animation: ${move} 0.33s 1 forwards;
+        animation: ${moveDown} 0.33s 1 forwards;
       }
     }
 
-    > h3 {
+    > div:last-of-type {
       background-color: #c2cbc6;
     }
   }

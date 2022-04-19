@@ -1,150 +1,69 @@
-import React, { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion"
-import { useWindowDimensions } from '../hooks'
+import React, { useEffect, useState } from "react";
 import styled from "styled-components"
-import { toPng } from 'html-to-image'
-import { IProjectStatus, IProjectProps, ILoadMethodProps } from '../interfaces'
-import { LoadAnimationRandomSquares } from './animations'
+import { IProjectProps, ILoadMethodProps } from '../interfaces'
+import { LoadAnimationRandomSquares, LoadAnimationF1 } from './animations'
 import GravityProject from '../projects/gravity/src/App'
 import GameoflifeProject from '../projects/gameoflife/src/App'
 
 ////////////////////////////////////////////////////////////////
 
-interface IEntranceProps {
-  left: number
+interface IBackButtonProps {
+  onClick: () => void
 }
 
-////////////////////////////////////////////////////////////////
-
-
-
-const EntranceContainer = styled.div<IEntranceProps>`
-  position: absolute;
-  left: ${props => props.left};
-`;
-
-/////////////////////////
-
-const BackButton = styled.span`
+const StyledBackButton = styled.div`
   position: fixed;
-  top: 20px;
-  right: 20px;
+  top: 10px;
+  left: 10px;
   z-index: 3100;
-  background-color: #D8E2DC;
+  width: 50px;
+  height: 50px;
+  background-color: #fdf8ed;
   cursor: pointer;
-  padding: 8px 30px;
   border-radius: 5px;
   border: 2px solid #c2cbc6;
 
-  &:hover {
+  > div {
+    width: 22px;
+    height: 2px;
     background-color: #c2cbc6;
+    position: absolute;
+    border-radius: 2px;
+    left: 11px;
+  }
+
+  > div:nth-child(1) {
+    transform: rotate(45deg);
+    top: 31px;
+  }
+
+  > div:nth-child(2) {
+    transform: rotate(-45deg);
+    top: 17px;
+  }
+
+  &:hover {
+    border-color: #979e9a
+;
+
+    > div {
+      background-color: #979e9a;
+    }
   }
 `;
 
-/*
-const LoadLeft: React.FC<IProject> = ({ status, children }) => {
-  const { width } = useWindowDimensions()
-  const [magnitude, setMagnitude] = useState(width)
-
-  useEffect(() => {
-    setMagnitude(magnitude * (status.shouldEnter ? 1 : -1))
-  }, [status])
-
-
-  // TODO fix x: shouldEnter
-
-  return (
-    <AnimatePresence>
-      <motion.div animate={{ x: status.shouldEnter ? 0 : magnitude }} transition={{ duration: 1 }} initial={false} >
-        <EntranceContainer left={width}>
-          {
-            children
-          }
-        </EntranceContainer>
-      </motion.div>
-    </AnimatePresence>
-  )
-}
-
-const Load = (props: IProject) => (
-  <>
-    {
-      props.children
-    }
-  </>
+const BackButton = ({onClick}:IBackButtonProps) => (
+  <StyledBackButton onClick={() => onClick()}>
+    <div />
+    <div />
+  </StyledBackButton>
 )
 
-
-
-
-////////////////////////
-
-
-
-const LoadAnimationSlidingSquares: React.FC<IProject> = (props) => {
-  const { width, height } = useWindowDimensions()
-  const side = Math.ceil(width / 500)
-  const numRows = Math.ceil(height / side)
-  const numColumns = Math.ceil(width / side)
-  const updateFrequency = 1
-  const minDirection = Math.min(numRows, numColumns)
-
-  const onEnter = (context: CanvasRenderingContext2D | null, onEntered: () => void) => {
-    let round = 0
-
-    const interval = setInterval(() => {
-      const numRegions = round < numColumns ? Math.min(round, minDirection) : minDirection - (round - numColumns - 1)
-      const startRow = round < numColumns ? 0 : round - numColumns - 1
-
-      for (let i = 0; i < numRegions; i++) {
-        context!.clearRect((Math.max(0, numColumns - round) + i) * side, (numRows - 1 - startRow - i) * side, side, side)
-      }
-
-      round += 1
-
-      if (round > numColumns && numRegions === 0) {
-        onEntered()
-        clearInterval(interval)
-      }
-    }, updateFrequency)
-  }
-
-  const onExit = (context: CanvasRenderingContext2D | null, onExited: () => void, screenshot: HTMLImageElement) => {
-    context!.fillStyle = '#fdf8ed'
-    let round = 0
-
-    const interval = setInterval(() => {
-      const numRegions = round < numColumns ? Math.min(round, minDirection) : minDirection - (round - numColumns - 1)
-      const startRow = (round < minDirection ? round : minDirection) - 1
-
-      for (let i = 0; i < numRegions; i++) {
-        const x = Math.max(0, round - minDirection) + i
-        const y = (startRow - i)
-
-        context!.fillRect(x * side, y * side, side, side)
-        context!.drawImage(screenshot, x * side, y * side, side, side, x * side, y * side, side, side)
-      }
-
-      round += 1
-
-      if (round > minDirection && numRegions === 0) {
-        onExited()
-        clearInterval(interval)
-      }
-    }, updateFrequency)
-  }
-
-  return <LoadAnimation {...props} onEnter={onEnter} onExit={onExit} />
-}
-*/
-
-
-
-////////////////////////
+////////////////////////////////////////////////////////////////
 
 const Project: React.FC<IProjectProps> = (props) => {
   //const loadMethods: React.FC<IProject>[] = [LoadAnimationClipDiagonally]//[LoadLeft, Load, LoadAnimationRandomSquares, LoadAnimationSlidingSquares, LoadAnimationClipDiagonally]
-  const LoadMethod: React.FC<ILoadMethodProps> = LoadAnimationRandomSquares
+  const LoadMethod: React.FC<ILoadMethodProps> = LoadAnimationF1
 
   //const getLoader = (): React.FunctionComponent<IProject> => (
   //  loadMethods[Math.floor(Math.random() * loadMethods.length)]
@@ -152,9 +71,9 @@ const Project: React.FC<IProjectProps> = (props) => {
 
   return (
     <>
-      {   
+      {
         props.project && props.status.hasEntered &&
-          <BackButton onClick={() => props.setStatus(prev => ({...prev, shouldExit: true}))}>Back</BackButton>
+          <BackButton onClick={() => props.setStatus(prev => ({...prev, shouldExit: true}))} />
       }
 
       {

@@ -11,7 +11,8 @@ interface IHomeProps extends React.ComponentPropsWithoutRef<'div'>{
 }
 
 interface IProjectRowProps {
-  projectType: string,
+  title: string,
+  projects: IProject[],
   onOpenClick: (projectName:string) => void,
   onExploreClick: (projectName:string) => void,
 }
@@ -28,29 +29,25 @@ const ProjectRow = (props:IProjectRowProps) => {
   const { width, height }                         = useWindowDimensions()
   const [numProjectsShown, setNumProjectsShown]   = useState(4)
   const [currentStartIndex, setCurrentStartIndex] = useState(0)
-  const projectType:string                        = props.projectType
-  const filteredProjects:IProject[]               = projectJSON.filter(project => project.capacity === projectType)
-  const capacity2heading:Record<string,string>    = {
-    "personal": "Hobby projects",
-    "professional": "Professional life"
-  }
 
   const changeStartIndex = (change:number) => {
     const newIndex = currentStartIndex + change
 
-    if ((numProjectsShown + newIndex <= filteredProjects.length) && newIndex >= 0) {
+    if ((numProjectsShown + newIndex <= props.projects.length) && newIndex >= 0) {
       setCurrentStartIndex(newIndex)
     }
   }
 
   useEffect(() => {
-    const idealProjectWidth             = 350
-    const availableWidth                = 0.8 * width
+    const idealProjectWidth      = 350
+    const availableWidth         = 0.8 * width
 
-    const numProjectsDisplayable        = Math.ceil(availableWidth/idealProjectWidth)
+    const numProjectsDisplayable = Math.ceil(availableWidth/idealProjectWidth)
 
     setNumProjectsShown(numProjectsDisplayable)
   }, [width])
+
+  console.log(props.projects)
 
 
   useEffect(() => {
@@ -59,12 +56,12 @@ const ProjectRow = (props:IProjectRowProps) => {
 
   return (
     <StyledProjectRow offset={currentStartIndex} numProjects={numProjectsShown}>
-      <h2>{capacity2heading[projectType]}</h2>
+      <h2>{props.title}</h2>
 
       <div>
         <div>
           {
-            filteredProjects.map(project => (
+            props.projects.map(project => (
               <Project key={project.title} numProjects={numProjectsShown} onOpenClick={props.onOpenClick} onExploreClick={props.onExploreClick} {...project}></Project>
             ))
           }
@@ -78,7 +75,7 @@ const ProjectRow = (props:IProjectRowProps) => {
             </div>
         }
         {
-          numProjectsShown + currentStartIndex < filteredProjects.length &&
+          numProjectsShown + currentStartIndex < props.projects.length &&
             <div className="gradient_right" onClick={() => changeStartIndex(1)}>
               <div />
               <div />
@@ -97,8 +94,10 @@ const Project:React.FC<IProjectProps> = (props) => {
   return (
     <StyledProject numProjects={props.numProjects}>
       <div>
-        <img src={icon} />
-
+        <div>
+          {<img src={icon} />
+          }
+        </div>
         <div>
           {
             props.type === "preview" &&
@@ -114,14 +113,14 @@ const Project:React.FC<IProjectProps> = (props) => {
             props.links.length > 0 &&
               <>
                 {
-                  props.links.map(link => {
+                  props.links.map((link, i) => {
                     if (link.type === "web") {
-                      return <a href={link.url}  className="grow">Visit</a>
+                      return <a key={i} href={link.url}  className="grow">Visit</a>
                     } else {
                       const logo = require(`./static/${link.type}.png`).default
   
                       return (
-                        <a key={link.type} href={link.url}>
+                        <a key={i} href={link.url}>
                           <img src={logo} />
                           <span>{getWebsiteDisplayName(link.type)}</span>
                         </a>
@@ -134,23 +133,62 @@ const Project:React.FC<IProjectProps> = (props) => {
 
         </div>
       </div>
-
-      <h3>{props.title}</h3>
+      
+      <div>
+        <p>{props.title}</p>
+      </div>
     </StyledProject>
   )
 }
 
 ///////////////////////////////////////////////////////////
 
-const Home = forwardRef<HTMLDivElement, IHomeProps>((props, ref) => (
-  <StyledHome ref={ref}>
-    <div>
-      {
-        ["personal", "professional"].map(sp => <ProjectRow projectType={sp} key={sp} onOpenClick={props.onOpenClick} onExploreClick={props.onExploreClick} />)
-      }
-    </div>
-  </ StyledHome>
-));
+const Home = forwardRef<HTMLDivElement, IHomeProps>((props, ref) => {
+  const capacity2title:Record<string,string>    = {
+    "personal": "Hobby projects",
+    "professional": "Professional life"
+  }
+  const formattedProjects                       = projectJSON.reduce((prev:string[][], project:IProject) => [...prev, [project.id, ...project.tags, project.title, project.type, project.capacity, capacity2title[project.capacity]]], [])
+  const [filteredResults, setFilteredResults]   = useState<IProject[]>(projectJSON)
+  const capacities                              = ["personal", "professional"]
+
+  const onFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const filter             = event.target.value
+    let results:IProject[]   = []
+
+    if (filter === "") {
+      results = projectJSON
+    } else {
+      const filteredProjects = formattedProjects.filter((project:string[]) => project.some(property => property.toLowerCase().includes(filter)))
+      const resultIDs        = filteredProjects.reduce((prev, [id, ...rest]) => [...prev, id], [])
+      results                = projectJSON.filter(project => resultIDs.includes(project.id))
+    }
+
+    setFilteredResults(results)
+  }
+
+  return (
+    <StyledHome ref={ref}>
+      <input placeholder="Filter.." onChange={onFilterChange} />
+      <>
+        {
+          Object.entries(
+            capacities.reduce(
+              (prev, capacity) => ({...prev, [capacity]: filteredResults.filter(
+                result => result.capacity === capacity
+              )}), {}
+            )
+          ).filter(
+            ([_, projects]) => (projects as IProject[]).length > 0
+          )
+          .map(
+            ([capacity, projects]) => <ProjectRow key={capacity} title={capacity2title[capacity]} projects={projects as IProject[]} onOpenClick={props.onOpenClick} onExploreClick={props.onExploreClick} />
+          )
+        }
+      </>
+    </ StyledHome>
+  )
+});
 
 Home.displayName = "Home"
 

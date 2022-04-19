@@ -1,7 +1,16 @@
 const Draw = {
-  drawRectangle: function(context: CanvasRenderingContext2D | null, startX:number, startY:number, width: number, height: number, color:string):void {
+  setFillStyle: function(context: CanvasRenderingContext2D | null, fillStyle: string):void {
     if (context) {
-      context.fillStyle = color
+      context.fillStyle = fillStyle
+    }
+  },
+  
+  drawRectangle: function(context: CanvasRenderingContext2D | null, startX:number, startY:number, width: number, height: number, color?:string):void {
+    if (context) {
+      if (color) {
+        context.fillStyle = color
+      }
+
       context.fillRect(startX, startY, width, height)
     }
   },
