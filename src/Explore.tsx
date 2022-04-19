@@ -104,7 +104,7 @@ const Preview:React.FC<IPreviewProps> = ({projectName, numPreviews}) => {
       <div>
         {
           currentPreview && numPreviews > 1 &&
-            Array(numPreviews).fill(0).map((source, index) => <StyledPreviewButton key={index} active={currentPreviewIndex === index + 1} onClick={() => { setCurrentPreviewIndex(index + 1); setSkipNextInterval(true)}} />)
+            Array(numPreviews).fill(0).map((_, index) => <StyledPreviewButton key={index} active={currentPreviewIndex === index + 1} onClick={() => { setCurrentPreviewIndex(index + 1); setSkipNextInterval(true)}} />)
         }
       </div>
     </StyledPreview>

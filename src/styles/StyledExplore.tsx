@@ -21,7 +21,15 @@ export const StyledExplore = styled.div`
   
   
     @media (max-width: calc(192px * 6.5)), (max-height: calc(96px * 6.5)) {
+      width: calc(192px * 5);
+    }
+
+    @media (max-width: calc(192px * 5.5)), (max-height: calc(96px * 5.5)) {
       width: calc(192px * 4);
+    }
+
+    @media (max-width: calc(192px * 4.5)), (max-height: calc(96px * 4.5)) {
+      width: calc(192px * 3);
     }
   }
 `;
@@ -40,8 +48,18 @@ export const StyledPreview = styled.div`
     height: calc(96px * 6);
 
     @media (max-width: calc(192px * 6.5)), (max-height: calc(96px * 6.5)) {
+      width: calc(192px * 5);
+      height: calc(96px * 5);
+    }
+
+    @media (max-width: calc(192px * 5.5)), (max-height: calc(96px * 5.5)) {
       width: calc(192px * 4);
       height: calc(96px * 4);
+    }
+
+    @media (max-width: calc(192px * 4.5)), (max-height: calc(96px * 4.5)) {
+      width: calc(192px * 3);
+      height: calc(96px * 3);
     }
 
     > img {
