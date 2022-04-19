@@ -47,8 +47,6 @@ const ProjectRow = (props:IProjectRowProps) => {
     setNumProjectsShown(numProjectsDisplayable)
   }, [width])
 
-  console.log(props.projects)
-
 
   useEffect(() => {
     setCurrentStartIndex(0)
@@ -153,7 +151,7 @@ const Home = forwardRef<HTMLDivElement, IHomeProps>((props, ref) => {
   const capacities                              = ["personal", "professional"]
 
   const onFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const filter             = event.target.value
+    const filter             = event.target.value.toLowerCase()
     let results:IProject[]   = []
 
     if (filter === "") {
